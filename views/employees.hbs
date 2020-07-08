@@ -1,0 +1,28 @@
+<h1>Співробітники</h1>
+
+{{#if employees.length}}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Ім'я</th>
+            <th scope="col">Посада</th>
+            <th scope="col">Опис</th>
+            <th scope="col"></th>
+            </tr>
+        </thead>
+        {{#each employees}}
+            <tbody>
+                <tr>
+                <th scope="row">{{id}}</th>
+                <td>{{name}}</td>
+                <td>{{position}}</td>
+                <td>{{description}}</td>
+                <td><a class="btn btn-primary" href="/employees/{{id}}/edit">Редагувати</a></td>
+                </tr>
+            </tbody>
+        {{/each}}
+    </table>
+{{else}}
+    <p>Нікого не має</p>
+{{/if}}

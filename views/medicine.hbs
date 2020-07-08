@@ -1,0 +1,28 @@
+<h1>Ліки</h1>
+
+{{#if medicines.length}}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Назва</th>
+            <th scope="col">Кількість</th>
+            <th scope="col">Опис</th>
+            <th scope="col"></th>
+            </tr>
+        </thead>
+        {{#each medicines}}
+            <tbody>
+                <tr>
+                <th scope="row">{{id}}</th>
+                <td>{{title}}</td>
+                <td>{{count}}</td>
+                <td>{{description}}</td>
+                <td><a class="btn btn-primary" href="/medicine/{{id}}/edit">Редагувати</a></td>
+                </tr>
+            </tbody>
+        {{/each}}
+    </table>
+{{else}}
+    <p>Нічого не має</p>
+{{/if}}

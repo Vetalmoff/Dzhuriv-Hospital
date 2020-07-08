@@ -1,0 +1,26 @@
+{{#if medicines.length}}
+
+    <form>
+    <div class="form-group">
+        <label for="medicines">Список</label>
+        <select class="form-control" id="medicines">
+            {{#each}}
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Кількість</label>
+        <input type="number" class="form-control" id="quontity" name="quantity">
+    </div>
+    <div class="form-group">
+        <label for="desc">Опис</label>
+        <input type="text" name="desc" id="desc">
+    </div>
+    </form>
+{{else}}
+    <p>Додайте хоч один препарат</p>
+{{/if}}

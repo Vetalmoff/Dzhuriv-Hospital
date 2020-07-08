@@ -1,0 +1,29 @@
+<h1>Пацієнти</h1>
+
+
+{{#if pacients.length}}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Ім'я</th>
+            <th scope="col">Вік</th>
+            <th scope="col">Опис</th>
+            <th scope="col"></th>
+            </tr>
+        </thead>
+        {{#each pacients}}
+            <tbody>
+                <tr>
+                <th scope="row">{{id}}</th>
+                <td>{{name}}</td>
+                <td>{{age}}</td>
+                <td>{{description}}</td>
+                <td><a class="btn btn-primary" href="/pacients/{{id}}/edit">Редагувати</a></td>
+                </tr>
+            </tbody>
+        {{/each}}
+    </table>
+{{else}}
+    <p>Нікого не має</p>
+{{/if}}
