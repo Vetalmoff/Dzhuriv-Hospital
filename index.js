@@ -11,6 +11,9 @@ const pacientRouter = require('./routes/pacients')
 const addMedicineRouter = require('./routes/addMedicine')
 const addEmployeeRouter = require('./routes/addEmployee')
 const addPacientRouter = require('./routes/addPacient')
+const addIncomingRouter = require('./routes/addIncoming')
+const addConsumptionRouter = require('./routes/addConsumption')
+const InRerportRouter = require('./routes/InReport')
 
 const PORT = process.env.PORT || 3000
 
@@ -35,6 +38,9 @@ app.use('/pacients', pacientRouter)
 app.use('/addMedicine', addMedicineRouter)
 app.use('/addEmployee', addEmployeeRouter)
 app.use('/addPacient', addPacientRouter)
+app.use('/addIncoming', addIncomingRouter)
+app.use('/addConsumption', addConsumptionRouter)
+app.use('/inReport', InRerportRouter)
 
 
 async function start() {

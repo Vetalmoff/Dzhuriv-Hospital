@@ -1,0 +1,40 @@
+<h1>Виберіть медикамент і період за який Ви хочете подивитися</h1>
+
+
+<h1>Прихід</h1>
+
+{{#if allMedicines.length}}
+    <form method="POST" action="/inReport">
+        <div class="form-group">
+            <label for="title">Медикаменти</label>
+            <select name="id" class="form-control" id="title">
+
+                <option selected value="0">Всі</option>
+
+                {{#each allMedicines}}
+                        <option value="{{dataValues.id}}">{{dataValues.title}}</option>
+                {{/each}}
+
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="start">Start date:</label>
+            <input type="date" id="start" name="trip-start"
+                value="2020-00-00"
+                min="2018-01-01" max="2030-12-31">
+            <br>
+
+            <label for="end">End date:</label>
+            <input type="date" id="start" name="trip-end"
+                value="2020-00-00"
+                min="2018-01-01" max="2030-12-31">
+        </div>
+        
+        <div>
+            <button type="submit" class="btn btn-primary mb-2">Ок</button>
+        </div>
+    </form>
+
+{{else}}
+    <h1>Медикаментів немає!</h1>
+{{/if}}

@@ -1,5 +1,6 @@
 const {Sequelize, DataTypes, INTEGER} = require('sequelize')
 const sequelize = require('../utils/db')
+const Medicine = require('./medicine')
 
 const incoming = sequelize.define('Incoming', {
     id: { 
@@ -9,9 +10,11 @@ const incoming = sequelize.define('Incoming', {
         allowNull: false
     },
     quantity: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        defaultValue: 0
     }
 })
+
 
 
 module.exports = incoming

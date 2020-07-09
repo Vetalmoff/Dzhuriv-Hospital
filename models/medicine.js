@@ -1,7 +1,9 @@
 const {Sequelize, DataTypes, INTEGER} = require('sequelize')
 const sequelize = require('../utils/db')
+const Incoming = require('./in')
+const Consumption = require('./out')
 
-const medicine =sequelize.define('Medicine', {
+const medicine = sequelize.define('Medicine', {
     id: {
         primaryKey: true,
         autoIncrement: true,
@@ -23,7 +25,10 @@ const medicine =sequelize.define('Medicine', {
     }
 })
 
-
+medicine.hasMany(Incoming)
+Incoming.belongsTo(medicine)
+medicine.hasMany(Consumption)
+Consumption.belongsTo(medicine)
 
 
 module.exports = medicine

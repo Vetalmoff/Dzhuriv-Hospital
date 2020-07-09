@@ -1,0 +1,22 @@
+{{#if incoming.length}}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Назва</th>
+            <th scope="col">Кількість</th>
+            </tr>
+        </thead>
+        {{#each incoming}}
+            <tbody>
+                <tr>
+                <th scope="row">{{id}}</th>
+                <td>{{Medicine.title}}</td>
+                <td>{{quantity}}</td>
+                </tr>
+            </tbody>
+        {{/each}}
+    </table>
+{{else}}
+    <p>Нічого не має</p>
+{{/if}}

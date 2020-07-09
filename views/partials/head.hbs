@@ -49,18 +49,26 @@
                 <a class="dropdown-item" href="/addPacient">Пацієнти</a>
             </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Прихід</a>
+            {{#if isIncoming}}
+                <a class="nav-link active" href="/addIncoming">Прихід</a>
+            {{else}}
+                <a class="nav-link" href="/addIncoming">Прихід</a>
+            {{/if}}
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Розхід</a>
+            {{#if isConsumption}}
+                <a class="nav-link active" href="/addConsumption">Розхід</a>
+            {{else}}
+                <a class="nav-link" href="/addConsumption">Розхід</a>
+            {{/if}}
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Звіт
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Прихід</a>
-            <a class="dropdown-item" href="#">Розхід</a>
+            <a class="dropdown-item" href="/inReport">Прихід</a>
+            <a class="dropdown-item" href="/outReport">Розхід</a>
             </div>
         </li>
         </ul>
