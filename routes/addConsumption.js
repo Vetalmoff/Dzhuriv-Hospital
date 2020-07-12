@@ -24,30 +24,41 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
+        const allMedicines = await Medicine.findAll()
+        const allEmployees = await Employee.findAll()
+        const allPacients = await Pacient.findAll()
         console.log(req.body)
-        const {id, quantity, employeeName, pacientName} = req.body
+        const {id, quantity, employeeName, pacientName, date} = req.body
         const medicine = await Medicine.findOne({
             where: {
                 id: id
             }
         })
-        medicine.count -=  +quantity 
-        if (medicine.quantity < 0) {
-            res.redirect('/addConsumption')
+        if (medicine.count < +quantity) {
+            res.render('addConsumption', {
+                allMedicines,
+                allEmployees,
+                allPacients
+            })
+        } else {
+            medicine.count -=  +quantity 
+
+            console.log('Medicine quantity = ', medicine.count)
+            await medicine.save()
+            console.log(medicine)
+            console.log(employeeName, pacientName)
+    
+            const consumption = await Consumption.create({
+                MedicineId: +id,
+                quantity: +quantity,
+                employee: employeeName,
+                pacient: pacientName,
+                date
+            })
+    
+            res.redirect('/medicine')
         }
-        console.log('Medicine quantity = ', medicine.count)
-        await medicine.save()
-        console.log(medicine)
-        console.log(employeeName, pacientName)
-
-        const consumption = await Consumption.create({
-            MedicineId: +id,
-            quantity: +quantity,
-            employee: employeeName,
-            pacient: pacientName
-        })
-
-        res.redirect('/medicine')
+       
 
     } catch(e) {
         res.render('500')

@@ -1,21 +1,22 @@
 const {Router} = require('express')
+const { Op, where, Sequelize } = require("sequelize")
 const router = Router()
 const Consumption = require('../models/out')
 const Medicine = require('../models/medicine')
 const Incoming = require('../models/in')
 const Employee = require('../models/employee')
 const Pacient = require('../models/pacient')
+const sequelize = require('../utils/db')
 
 
 router.get('/', async (req, res) => {
     try {
         const allMedicines = await Medicine.findAll()
-        const incoming = await Incoming.findAll()
+        console.log('allMedicines.length = ', allMedicines.length)
         res.render('InReportForm', {
             title: 'Звіт по приходу',
             isReport: true,
             allMedicines,
-            incoming
         })
     } catch(e) {
         res.render('500')
@@ -24,43 +25,35 @@ router.get('/', async (req, res) => {
 
 router.post('/', async(req, res) => {
     try {   
-        const incoming = await Incoming.findAll({
-            include: [{
-                model: Medicine,
-                where: {
-                    id: req.body.id
-                }
-            }]
-        })
+        const arrBody = req.body.id.split('  ')
         
-        
-
-        console.log('Form = ', req.body)
-        
-
-        console.log(incoming)
-
-        const medicine = await Medicine.findAll({ 
-    
+        console.log('arrBody = ', arrBody)
+        console.log(req.body)
+  
+        const incomings = await Incoming.findAll({
+            attributes: ['MedicineId', [sequelize.fn('sum', sequelize.col('quantity')), 'quantity'], 'date'],
+            group: 'MedicineId',
             where: {
-                id: req.body.id
+                date: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
+                MedicineId: {
+                    [Op.in]: arrBody
+                }
             },
             include: [{
-                model: Incoming
+                model: Medicine,
+                required: true,
+                attributes: ['title']
             }]
         })
-        // const sum = await Incoming.sum('quantity', {
-        //     where: {
-        //         MedicineId: req.body.id
-        //     }
-        // })
-        console.log(medicine)
-        // console.log(sum)
 
+        console.log(incomings)
+        console.log('Form =', req.body.id)
+        
 
         res.render('inReport', {
-            incoming
+            incomings
         })
+
     } catch(e) {
         res.render('500')
     }

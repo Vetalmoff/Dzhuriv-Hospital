@@ -29,15 +29,22 @@ router.post('/', async (req, res) => {
         await medicine.save()
         console.log(medicine)
 
-        const incoming = Incoming.create({
+        const incoming = await Incoming.create({
             MedicineId: +req.body.id,
-            quantity: +req.body.quantity
+            quantity: +req.body.quantity,
+            date: req.body.dateIn
         })
 
         res.redirect('/medicine')
 
     } catch(e) {
-        res.render('500')
+        console.log('message =', e.message)
+
+        if (e.message === 'Validation error: Validation isDate on data failed') {
+            res.redirect('/addIncoming')
+        } else {
+            throw e
+        }        
     }
 })
 

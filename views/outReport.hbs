@@ -1,6 +1,6 @@
-<h1>Звіт по приходу </h1>
+<h1>Звіт по розходу </h1>
 
-{{#if incomings.length}}
+{{#if consumptions.length}}
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -9,7 +9,7 @@
             <th scope="col">Кількість</th>
             </tr>
         </thead>
-        {{#each incomings}}
+        {{#each consumptions}}
             <tbody>
                 <tr>
                 <th scope="row">{{@index}}</th>

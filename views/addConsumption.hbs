@@ -1,48 +1,56 @@
 <h1>Розхід</h1>
 
-{{#if allMedicines.length}}
-    <form method="POST" action="/addConsumption">
-        <div class="form-group">
-            <label for="title">Медикаменти</label>
-            <select name="id" class="form-control" id="title">
+<div class="form">
+    {{#if allMedicines.length}}
+        <form method="POST" action="/addConsumption">
+            <div class="form-group">
+                <label for="title">Медикаменти</label>
+                <select name="id" class="form-control" id="title" required>
 
-                {{#each allMedicines}}
-                    {{#if dataValues.count}}
-                        <option value="{{dataValues.id}}">{{dataValues.title}}</option>
-                    {{/if}}
-                {{/each}}
+                    {{#each allMedicines}}
+                        {{#if dataValues.count}}
+                            <option value="{{dataValues.id}}">{{dataValues.title}}</option>
+                        {{/if}}
+                    {{/each}}
 
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="quantity">Кількість</label>
-            <input type="number" name="quantity" id="quantity" required>
-        </div>
-        <div class="form-group">
-            <label for="employeeName">Співробітник</label>
-            <select name="employeeName" class="form-control" id="employeeName">
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="quantity">Кількість</label>
+                <input type="number" name="quantity" id="quantity" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="start">Дата :</label>
+                <input type="date" id="start" name="date" required
+                    min="2018-01-01" max="2030-12-31">
+                <br>
+            </div>
+            <div class="form-group">
+                <label for="employeeName">Співробітник</label>
+                <select name="employeeName" class="form-control" id="employeeName">
 
-                {{#each allEmployees}}
-                        <option value="{{dataValues.id}}">{{dataValues.name}}</option>
-                {{/each}}
+                    {{#each allEmployees}}
+                            <option value="{{id}}">{{name}}</option>
+                    {{/each}}
 
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="pacientName">Пацієнт</label>
-            <select name="pacientName" class="form-control" id="pacientName">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pacientName">Пацієнт</label>
+                <select name="pacientName" class="form-control" id="pacientName">
 
-                {{#each allPacients}}
-                        <option value="{{dataValues.id}}">{{dataValues.name}}</option>
-                {{/each}}
+                    {{#each allPacients}}
+                            <option value="{{id}}">{{name}}</option>
+                    {{/each}}
 
-            </select>
-        </div>
-        <div>
-            <button type="submit" class="btn btn-primary mb-2">Ок</button>
-        </div>
-    </form>
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary mb-2">Ок</button>
+            </div>
+        </form>
 
-{{else}}
-    <h1>Медикаментів немає!</h1>
-{{/if}}
+    {{else}}
+        <h1>Медикаментів немає!</h1>
+    {{/if}}
+</div>

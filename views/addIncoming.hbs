@@ -1,26 +1,34 @@
 <h1>Прихід</h1>
 
-{{#if allMedicines.length}}
-    <form method="POST" action="/addIncoming">
-        <div class="form-group">
-        <label for="title">Медикаменти</label>
-        <select name="id" class="form-control" id="title">
+<div class="form">
+    {{#if allMedicines.length}}
+        <form class="form-horizontal" method="POST" action="/addIncoming">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="title">Медикаменти</label>
+                <select name="id" class="form-control" id="title">
 
-            {{#each allMedicines}}
-                <option value="{{dataValues.id}}">{{dataValues.title}}</option>
-            {{/each}}
+                    {{#each allMedicines}}
+                        <option value="{{dataValues.id}}">{{dataValues.title}}</option>
+                    {{/each}}
 
-        </select>
-    </div>
-        <div class="form-group">
-            <label for="quantity">Кількість</label>
-            <input type="number" name="quantity" id="quantity" required>
-        </div>
-        <div>
-            <button type="submit" class="btn btn-primary mb-2">Ок</button>
-        </div>
-    </form>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="quantity">Кількість</label>
+                <input type="number" name="quantity" id="quantity" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="start">Дата :</label>
+                <input type="date" id="start" name="dateIn" required
+                    min="2018-01-01" max="2030-12-31">
+                <br>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary mb-2">Ок</button>
+            </div>
+        </form>
 
-{{else}}
-    <h1>Приходу немає!</h1>
-{{/if}}
+    {{else}}
+        <h1>Приходу немає!</h1>
+    {{/if}}
+</div>

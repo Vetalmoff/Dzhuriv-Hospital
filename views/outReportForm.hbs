@@ -1,17 +1,17 @@
 <h1>Виберіть медикамент і період за який Ви хочете подивитися</h1>
 
 
-<h1>Прихід</h1>
+<h1>Розхід</h1>
 
-{{#if allMedicines.length}}
-    <form method="POST" action="/inReport">
+{{#if medicines.length}}
+    <form method="POST" action="/OutReport">
         <div class="form-group">
             <label for="title">Медикаменти</label>
             <select name="id" class="form-control" id="title">
 
-                <option selected value="{{#each allMedicines}} {{id}} {{/each}}">Всі</option>
+                <option selected value="{{#each medicines}} {{id}} {{/each}}">Всі</option>
 
-                {{#each allMedicines}}
+                {{#each medicines}}
                         <option value="{{id}}">{{title}}</option>
                 {{/each}}
 
