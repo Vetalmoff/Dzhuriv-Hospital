@@ -1,17 +1,35 @@
 const {Router} = require('express')
 const router = Router()
 const Medicine = require('../models/medicine')
+const { Op } = require('sequelize')
 
 
 router.get('/', async (req, res) => {
     try {
-        const medicines = await Medicine.findAll()
-        //console.log('MEDICINES = ', medicines)
-        res.render('medicine', {
-            medicines,
-            title: 'Ліки',
-            isCatalog: true
-        })
+        if (req.query.title) {
+            const items = await Medicine.findAll({
+                where: {
+                    title: {
+                        [Op.like]: `${req.query.title}%`
+                    } 
+                }
+            })
+            console.log(items)
+            if (items) {
+                res.json(items)
+            } else {
+                res.sendStatus(404)
+            }
+        } else {
+            const medicines = await Medicine.findAll()
+            //console.log('MEDICINES = ', medicines)
+            res.render('medicine', {
+                medicines,
+                title: 'Ліки',
+                isCatalog: true
+            })
+        }
+        
     } catch(e) {
         res.status(500).render('500')
     }

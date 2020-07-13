@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const exphbs = require('express-handlebars')
 const Handlebars = require('handlebars')
+const path = require('path')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 const sequelize = require('./utils/db')
 const homeRoutes = require('./routes/home')
@@ -15,6 +16,7 @@ const addIncomingRouter = require('./routes/addIncoming')
 const addConsumptionRouter = require('./routes/addConsumption')
 const InRerportRouter = require('./routes/InReport')
 const outReportRouter = require('./routes/OutReport')
+const errorHandler404 = require('./middleware/errorHandler404')
 
 const PORT = process.env.PORT || 3000
 
@@ -27,7 +29,7 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs')
 app.set('views', 'views')
 
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
@@ -43,6 +45,8 @@ app.use('/addIncoming', addIncomingRouter)
 app.use('/addConsumption', addConsumptionRouter)
 app.use('/inReport', InRerportRouter)
 app.use('/outReport', outReportRouter)
+
+app.use(errorHandler404)
 
 
 async function start() {

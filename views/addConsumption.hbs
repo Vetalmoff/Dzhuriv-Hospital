@@ -16,7 +16,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="control-label" for="quantity">Кількість</label>
+                <label class="control-label control-label col-sm-3" for="quantity">Кількість</label>
                 <input type="number" name="quantity" id="quantity" required>
             </div>
             <div class="form-group">
@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label for="employeeName">Співробітник</label>
-                <select name="employeeName" class="form-control" id="employeeName">
+                <select name="employeeName" class="form-control" id="employeeName" required>
 
                     {{#each allEmployees}}
                             <option value="{{id}}">{{name}}</option>
@@ -37,7 +37,7 @@
             </div>
             <div class="form-group">
                 <label for="pacientName">Пацієнт</label>
-                <select name="pacientName" class="form-control" id="pacientName">
+                <select name="pacientName" class="form-control" id="pacientName" required>
 
                     {{#each allPacients}}
                             <option value="{{id}}">{{name}}</option>
@@ -46,7 +46,7 @@
                 </select>
             </div>
             <div>
-                <button type="submit" class="btn btn-primary mb-2">Ок</button>
+                <button type="submit" class="btn btn-primary mb-2">Зберегти</button>
             </div>
         </form>
 

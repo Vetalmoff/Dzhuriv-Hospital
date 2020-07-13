@@ -18,6 +18,13 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                {{#if isHome}}
+                    <a class="nav-link active" href="/">Головна</a>
+                {{else}}
+                    <a class="nav-link" href="/">Головна</a>
+                {{/if}}
+            </li>
             <li class="nav-item dropdown">
                 {{#if isCatalog}}
                     <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -48,33 +55,33 @@
                 <a class="dropdown-item" href="/addEmployee">Співробітники</a>
                 <a class="dropdown-item" href="/addPacient">Пацієнти</a>
             </li>
-        <li class="nav-item">
-            {{#if isIncoming}}
-                <a class="nav-link active" href="/addIncoming">Прихід</a>
-            {{else}}
-                <a class="nav-link" href="/addIncoming">Прихід</a>
-            {{/if}}
-        </li>
-        <li class="nav-item">
-            {{#if isConsumption}}
-                <a class="nav-link active" href="/addConsumption">Розхід</a>
-            {{else}}
-                <a class="nav-link" href="/addConsumption">Розхід</a>
-            {{/if}}
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Звіт
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/inReport">Прихід</a>
-            <a class="dropdown-item" href="/outReport">Розхід</a>
-            </div>
-        </li>
+            <li class="nav-item">
+                {{#if isIncoming}}
+                    <a class="nav-link active" href="/addIncoming">Прихід</a>
+                {{else}}
+                    <a class="nav-link" href="/addIncoming">Прихід</a>
+                {{/if}}
+            </li>
+            <li class="nav-item">
+                {{#if isConsumption}}
+                    <a class="nav-link active" href="/addConsumption">Розхід</a>
+                {{else}}
+                    <a class="nav-link" href="/addConsumption">Розхід</a>
+                {{/if}}
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Звіт
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/inReport">Прихід</a>
+                <a class="dropdown-item" href="/outReport">Розхід</a>
+                </div>
+            </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <form class="form-inline my-2 my-lg-0"> 
+            <input id="searchInput" class="form-control mr-sm-2" type="search" placeholder="Назва препарату" aria-label="Search">
+            <button id="searchButton" class="btn btn-outline-success my-2 my-sm-0" type="submit">Пошук</button>
         </form>
     </div>
     </nav>
