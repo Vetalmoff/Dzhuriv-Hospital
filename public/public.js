@@ -21,7 +21,7 @@ $searchBtn.addEventListener('click', (event) => {
                             <tr>
                             <th scope="col">#</th>
                             <th scope="col">Назва</th>
-                            <th scope="col">Кількість</th>
+                            <th scope="col">Залишок</th>
                             <th scope="col">Опис</th>
                             </tr>
                         </thead>`

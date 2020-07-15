@@ -27,9 +27,9 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {   
-        const arrBody = req.body.id.split('  ')
+        const arrBodyId = req.body.id.split('  ')
         
-        console.log('arrBody = ', arrBody)
+        console.log('arrBody = ', arrBodyId)
         console.log(req.body)
   
         const consumptions = await Consumption.findAll({
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
             where: {
                 date: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
                 MedicineId: {
-                    [Op.in]: arrBody
+                    [Op.in]: arrBodyId
                 }
             },
             include: [{
@@ -53,7 +53,9 @@ router.post('/', async (req, res) => {
         
 
         res.render('outReport', {
-            consumptions
+            consumptions,
+            from: req.body.from,
+            to: req.body.to
         })
 
     } catch(e) {

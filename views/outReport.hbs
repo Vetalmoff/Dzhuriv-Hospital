@@ -1,26 +1,26 @@
-<h1>Звіт по розходу </h1>
+<h1>Звіт по розходу з : {{from}} по {{to}}</h1>
 
-{{#if consumptions.length}}
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-            <th scope="col">#</th>
-            <th scope="col">Назва</th>
-            <th scope="col">Кількість</th>
-            </tr>
-        </thead>
-        {{#each consumptions}}
-            <tbody>
+    {{#if consumptions.length}}
+        <table class="table">
+            <thead class="thead-dark">
                 <tr>
-                <th scope="row">{{@index}}</th>
-                <td>{{Medicine.title}}</td>
-                <td>{{quantity}}</td>
+                <th scope="col">#</th>
+                <th scope="col">Назва</th>
+                <th scope="col">Кількість</th>
                 </tr>
-            </tbody>
-        {{/each}}
+            </thead>
+            {{#each consumptions}}
+                <tbody>
+                    <tr>
+                    <th scope="row">{{@index}}</th>
+                    <td>{{Medicine.title}}</td>
+                    <td>{{quantity}}</td>
+                    </tr>
+                </tbody>
+            {{/each}}
 
-                
-    </table>
-{{else}}
-    <h1>Нічого не має</h1>
-{{/if}}
+                    
+        </table>
+    {{else}}
+        <h1>Не має видачі за цей період</h1>
+    {{/if}}

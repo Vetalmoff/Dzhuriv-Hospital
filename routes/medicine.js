@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
             const items = await Medicine.findAll({
                 where: {
                     title: {
-                        [Op.like]: `${req.query.title}%`
+                        [Op.like]: `%${req.query.title}%`
                     } 
                 }
             })

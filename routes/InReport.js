@@ -51,7 +51,9 @@ router.post('/', async(req, res) => {
         
 
         res.render('inReport', {
-            incomings
+            incomings,
+            from: req.body.from,
+            to: req.body.to
         })
 
     } catch(e) {
