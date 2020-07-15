@@ -5,20 +5,20 @@ const sequelize = require('../utils/db')
 const Medicine = require('../models/medicine')
 const Consumption = require('../models/out')
 const Employee = require('../models/employee')
-const Pacient = require('../models/pacient')
+const Patient = require('../models/patient')
 
 router.get('/', async (req, res) => {
     try {
         const medicines = await Medicine.findAll({})
         const employees = await Employee.findAll({})
-        const pacients = await Pacient.findAll({})
+        const patients = await Patient.findAll({})
 
         res.render('outReportForm', {
             title: 'Звіт по розходу',
             isReport: true,
             medicines,
             employees,
-            pacients
+            patients
         })
     } catch(e) {
         throw e

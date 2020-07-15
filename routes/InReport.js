@@ -5,7 +5,7 @@ const Consumption = require('../models/out')
 const Medicine = require('../models/medicine')
 const Incoming = require('../models/in')
 const Employee = require('../models/employee')
-const Pacient = require('../models/pacient')
+const Patient = require('../models/patient')
 const sequelize = require('../utils/db')
 
 

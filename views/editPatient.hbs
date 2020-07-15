@@ -1,7 +1,7 @@
 <h1>Пацієнт</h1>
 
 
-<form method="POST" action="/pacients/edit">
+<form method="POST" action="/patients/edit">
     <div class="form-group">
         <label for="name">Ім'я</label>
         <input type="text" name="name" id="name" value="{{item.name}}" required>
@@ -20,7 +20,7 @@
     </div>
 </form>
 
-<form action="/pacients/delete" method="POST">
+<form action="/patients/delete" method="POST">
     <input type="hidden" name="id" value="{{item.id}}">
     <button class="btn btn-danger" type="submit">Видалити</button>
 </form>

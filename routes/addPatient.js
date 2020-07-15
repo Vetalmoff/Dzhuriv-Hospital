@@ -1,10 +1,10 @@
 const {Router} = require('express')
 const router = Router()
-const Pacient = require('../models/pacient')
+const Patient = require('../models/patient')
 
 
 router.get('/', async (req, res) => {
-        res.render('addPacient', {
+        res.render('addPatient', {
             title: 'Додати пацієнта',
             isAdd: true
         }) 
@@ -14,13 +14,13 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         console.log( 'Body = ', req.body)
-        const newPacient = await Pacient.create({
+        const newPatient = await Patient.create({
             name: req.body.name,
             age: +req.body.age,
             description: req.body.desc
         })
        
-        res.redirect('/pacients')
+        res.redirect('/patients')
     } catch(e) {
         res.status(500).render('500')
     }

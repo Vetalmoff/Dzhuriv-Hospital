@@ -1,7 +1,7 @@
 <h1>Пацієнти</h1>
 
 
-{{#if pacients.length}}
+{{#if patients.length}}
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -12,14 +12,14 @@
             <th scope="col"></th>
             </tr>
         </thead>
-        {{#each pacients}}
+        {{#each patients}}
             <tbody>
                 <tr>
                 <th scope="row">{{id}}</th>
                 <td>{{name}}</td>
                 <td>{{age}}</td>
                 <td>{{description}}</td>
-                <td><a class="btn btn-primary" href="/pacients/{{id}}/edit">Редагувати</a></td>
+                <td><a class="btn btn-primary" href="/patients/{{id}}/edit">Редагувати</a></td>
                 </tr>
             </tbody>
         {{/each}}

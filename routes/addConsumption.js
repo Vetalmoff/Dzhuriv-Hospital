@@ -3,19 +3,19 @@ const router = Router()
 const Consumption = require('../models/out')
 const Medicine = require('../models/medicine')
 const Employee = require('../models/employee')
-const Pacient = require('../models/pacient')
+const Patient = require('../models/patient')
 
 router.get('/', async (req, res) => {
     try {
         const allMedicines = await Medicine.findAll()
         const allEmployees = await Employee.findAll()
-        const allPacients = await Pacient.findAll()
+        const allPatients = await Patient.findAll()
         res.render('addConsumption', {
             title: 'Розхід',
             isConsumption: true,
             allMedicines,
             allEmployees,
-            allPacients
+            allPatients
         })
     } catch(e) {
         res.render('500')
@@ -26,9 +26,9 @@ router.post('/', async (req, res) => {
     try {
         const allMedicines = await Medicine.findAll()
         const allEmployees = await Employee.findAll()
-        const allPacients = await Pacient.findAll()
+        const allPatients = await Patient.findAll()
         console.log(req.body)
-        const {id, quantity, employeeName, pacientName, date} = req.body
+        const {id, quantity, employeeName, patientName, date} = req.body
         const medicine = await Medicine.findOne({
             where: {
                 id: id
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
             res.render('addConsumption', {
                 allMedicines,
                 allEmployees,
-                allPacients
+                allPatients
             })
         } else {
             medicine.count -=  +quantity 
@@ -46,13 +46,13 @@ router.post('/', async (req, res) => {
             console.log('Medicine quantity = ', medicine.count)
             await medicine.save()
             console.log(medicine)
-            console.log(employeeName, pacientName)
+            console.log(employeeName, patientName)
     
             const consumption = await Consumption.create({
                 MedicineId: +id,
                 quantity: +quantity,
                 employee: employeeName,
-                pacient: pacientName,
+                patient: patientName,
                 date
             })
     

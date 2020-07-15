@@ -1,14 +1,14 @@
 const {Router} = require('express')
 const router = Router()
-const Pacient = require('../models/pacient')
+const Patient = require('../models/patient')
 
 
 router.get('/', async (req, res) => {
     try {
-        const pacients = await Pacient.findAll()
-        console.log(pacients)
-        res.render('pacients', {
-            pacients,
+        const patients = await Patient.findAll()
+        console.log(patients)
+        res.render('patients', {
+            patients,
             title: 'Пацієнти',
             isCatalog: true
         })
@@ -20,9 +20,9 @@ router.get('/', async (req, res) => {
 
 router.get('/:id/edit', async (req, res) => {
     try {
-        const item = await Pacient.findByPk(req.params.id) 
+        const item = await Patient.findByPk(req.params.id) 
         console.log('Item = ', item)
-        res.render('editPacient', {
+        res.render('editPatient', {
             title: 'Редагувати',
             item
         })
@@ -33,12 +33,12 @@ router.get('/:id/edit', async (req, res) => {
 
 router.post('/edit', async (req, res) => {
     try {
-        const item = Pacient.update({name: req.body.name, age: req.body.age, description: req.body.desc}, {
+        const item = Patient.update({name: req.body.name, age: req.body.age, description: req.body.desc}, {
             where: {
                 id: req.body.id
             }
         })
-        res.redirect('/pacients')
+        res.redirect('/patients')
     } catch(e) {
         res.status(500).render('500')
     }
@@ -46,12 +46,12 @@ router.post('/edit', async (req, res) => {
 
 router.post('/delete', async (req, res) => {
     try {
-        const item = Pacient.destroy({
+        const item = Patient.destroy({
             where: {
                 id: req.body.id
             }
         })
-        res.redirect('/pacients')
+        res.redirect('/patients')
     } catch(e) {
         res.status(500).render('500')
     }

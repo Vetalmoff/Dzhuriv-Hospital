@@ -25,9 +25,9 @@ const medicine = sequelize.define('Medicine', {
     }
 })
 
-medicine.hasMany(Incoming, {onDelete: 'cascade', onUpdate: 'cascade'})
+medicine.hasMany(Incoming, {onDelete: 'RESTRICT', onUpdate: 'cascade'})
 Incoming.belongsTo(medicine)
-medicine.hasMany(Consumption, {onDelete: 'cascade', onUpdate: 'cascade'})
+medicine.hasMany(Consumption, {onDelete: 'RESTRICT', onUpdate: 'cascade'})
 Consumption.belongsTo(medicine)
 
 
