@@ -15,7 +15,7 @@ const medicine = sequelize.define('Medicine', {
         allowNull: false,
         unique: true
     },
-    count: {
+    remainder: {
         type: DataTypes.INTEGER,
         defaultValue: 0
     },

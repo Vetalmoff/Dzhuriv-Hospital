@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
         const allMedicines = await Medicine.findAll()
         const allEmployees = await Employee.findAll()
         const allPatients = await Patient.findAll()
+        console.log(allMedicines)
         res.render('addConsumption', {
             title: 'Розхід',
             isConsumption: true,
@@ -34,16 +35,16 @@ router.post('/', async (req, res) => {
                 id: id
             }
         })
-        if (medicine.count < +quantity) {
+        if (medicine.remainder < +quantity) {
             res.render('addConsumption', {
                 allMedicines,
                 allEmployees,
                 allPatients
             })
         } else {
-            medicine.count -=  +quantity 
+            medicine.remainder -=  +quantity 
 
-            console.log('Medicine quantity = ', medicine.count)
+            console.log('Medicine quantity = ', medicine.remainder)
             await medicine.save()
             console.log(medicine)
             console.log(employeeName, patientName)

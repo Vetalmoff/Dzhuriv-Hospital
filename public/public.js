@@ -32,7 +32,7 @@ $searchBtn.addEventListener('click', (event) => {
                             <tr>
                             <th scope="row">${element.id}</th>
                             <td>${element.title}</td>
-                            <td>${element.count}</td>
+                            <td>${element.remainder}</td>
                             <td>${element.description}</td>
                             </tr>
                         </tbody>`

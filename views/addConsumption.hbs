@@ -8,8 +8,8 @@
                 <select name="id" class="form-control" id="title" required>
 
                     {{#each allMedicines}}
-                        {{#if dataValues.count}}
-                            <option value="{{dataValues.id}}">{{dataValues.title}}</option>
+                        {{#if remainder}}
+                            <option value="{{id}}">{{title}}</option>
                         {{/if}}
                     {{/each}}
 

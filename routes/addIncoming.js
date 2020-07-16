@@ -24,8 +24,8 @@ router.post('/', async (req, res) => {
                 id: req.body.id
             }
         })
-        medicine.count +=  +req.body.quantity 
-        console.log('Medicine quantity = ', medicine.count)
+        medicine.remainder +=  +req.body.quantity 
+        console.log('Medicine quantity = ', medicine.remainder)
         await medicine.save()
         console.log(medicine)
 

@@ -6,6 +6,8 @@ const Medicine = require('../models/medicine')
 const Consumption = require('../models/out')
 const Employee = require('../models/employee')
 const Patient = require('../models/patient')
+const { sum } = require('../models/out')
+const dateToView = require('../middleware/dateToView')
 
 router.get('/', async (req, res) => {
     try {
@@ -27,11 +29,11 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {   
+
         const arrBodyId = req.body.id.split('  ')
-        
-        console.log('arrBody = ', arrBodyId)
-        console.log(req.body)
   
+
+        //  Select dictinct records and sum theirs quantity and group by MedicineId
         const consumptions = await Consumption.findAll({
             attributes: ['MedicineId', [sequelize.fn('sum', sequelize.col('quantity')), 'quantity'], 'date'],
             group: 'MedicineId',
@@ -48,12 +50,72 @@ router.post('/', async (req, res) => {
             }]
         })
 
-        console.log(consumptions)
-        console.log('Form =', req.body.id)
+
+        //  Select ALL records of Consumptions TABLE
+        const extendedConsumptions = await Consumption.findAll({
+            where: {
+                date: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
+                MedicineId: {
+                    [Op.in]: arrBodyId
+                }
+            },
+            include: [{
+                model: Medicine,
+                required: true,
+                attributes: ['title']
+            }]
+        })
+
+        //  Select all records in Consumptions TABLE and SORT it by MedicineId
+        const singleConsumptions = await Promise.all(consumptions.map(async item =>  await Consumption.findAll({
+            where:   {              
+                date: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
+                MedicineId: item.MedicineId
+            },
+            include: [{
+                model: Medicine,
+                required: true,
+                attributes: ['title']
+            }]
+        })) ) 
+        console.log('PromisAll = ', singleConsumptions)
+
+        //  Find all MedicineId
+        const allMedicineId = extendedConsumptions.map(item => item.MedicineId)
+        console.log(allMedicineId)
+
+        //  Lost only uniq MedicineId
+        const uniqueMedicineId = [...new Set(allMedicineId)] 
+        console.log(uniqueMedicineId)
+
+        const arrayOfArraysConsumptions = []
         
+        //  Make an array of arrays with Consumptions group by MedicineId
+        uniqueMedicineId.forEach((item, index) => arrayOfArraysConsumptions.push(extendedConsumptions.filter(element => element.MedicineId === uniqueMedicineId[index])))
+
+
+        //  Count all remainders group by MedicineId
+        const allRemainders = arrayOfArraysConsumptions.map(item => item.reduce((sum, current) => sum + current.quantity, 0))
+        console.log(allRemainders)
+
+
+        //  Alter array of arrays to => array of objects with new keys : name, sum
+        const newArrOfConsumptions = arrayOfArraysConsumptions.map((item, index) => ({
+            item,
+            name: item[0].Medicine.title,
+            sum: allRemainders[index]
+        }))
+        console.log(newArrOfConsumptions)
+
+
+        //  Change a format Date to view '01.01.01'
+        newArrOfConsumptions.forEach(elem => elem.item.forEach(item => item.newDate = dateToView(item.date)))
+
 
         res.render('outReport', {
             consumptions,
+            newArrOfConsumptions,
+            allRemainders,
             from: req.body.from,
             to: req.body.to
         })
