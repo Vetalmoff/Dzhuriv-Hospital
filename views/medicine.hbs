@@ -14,11 +14,11 @@
         {{#each medicines}}
             <tbody>
                 <tr>
-                <th scope="row">{{id}}</th>
+                <th scope="row">{{@index}}</th>
                 <td>{{title}}</td>
                 <td>{{remainder}}</td>
                 <td>{{description}}</td>
-                <td><a class="btn btn-primary" href="/medicine/{{id}}/edit">Редагувати</a></td>
+                <td><a class="btn btn-info" href="/medicine/{{id}}/edit">Редагувати</a></td>
                 </tr>
             </tbody>
         {{/each}}

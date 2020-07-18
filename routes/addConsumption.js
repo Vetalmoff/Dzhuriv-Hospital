@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
         const allEmployees = await Employee.findAll()
         const allPatients = await Patient.findAll()
         console.log(req.body)
-        const {id, quantity, employeeName, patientName, date} = req.body
+        const {id, quantity, employeeName, patientName} = req.body
         const medicine = await Medicine.findOne({
             where: {
                 id: id
@@ -53,8 +53,7 @@ router.post('/', async (req, res) => {
                 MedicineId: +id,
                 quantity: +quantity,
                 employee: employeeName,
-                patient: patientName,
-                date
+                patient: patientName
             })
     
             res.redirect('/medicine')

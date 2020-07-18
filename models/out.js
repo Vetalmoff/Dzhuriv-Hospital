@@ -12,13 +12,6 @@ const consumption = sequelize.define('Consumption', {
     quantity: {
         type: DataTypes.INTEGER,
         defaultValue: 0
-    },
-    date: {
-        type: DataTypes.DATE,
-        defaultValue: Sequelize.NOW,
-        validate: {
-            isDate: true
-        }
     }
 })
 

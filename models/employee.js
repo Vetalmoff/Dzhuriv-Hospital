@@ -21,9 +21,18 @@ const employee = sequelize.define('Employee', {
     }
 })
 
-employee.hasMany(Consumption, {foreignKey: {
+employee.hasMany(Consumption, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'RESTRICT',
+    foreignKey: {
     name: 'employee'
     }
 })
+Consumption.belongsTo(employee, {
+    foreignKey: {
+        name: 'employee'
+    }
+})
+
 
 module.exports = employee

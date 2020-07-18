@@ -1,25 +1,26 @@
 <h1>Редагувати препарат</h1>
 
 
-<form method="POST" action="/medicine/edit">
-    <div class="form-group">
-        <label for="title">Назва препарату</label>
-        <input type="text" name="title" id="title" value="{{item.title}}">
-    </div>
-    <div class="form-group">
-        <label for="desc">Опис</label>
-        <input type="text" name="desc" id="desc" value="{{item.description}}">
-    </div>
-    <input type="hidden" value="{{item.id}}" name="id">
-    <div>
-        <button type="submit" class="btn btn-primary mb-2">Зберегти</button>
-    </div>
-</form>
+<div class="form">
+  <form method="POST" action="/medicine/edit">
+      <div class="form-group">
+          <label class="col-sm-3" for="title">Назва препарату</label>
+          <input type="text" name="title" id="title" value="{{item.title}}">
+      </div>
+      <div class="form-group">
+          <label class="col-sm-3" for="desc">Опис</label>
+          <input type="text" name="desc" id="desc" value="{{item.description}}">
+      </div>
+      <input type="hidden" value="{{item.id}}" name="id">
+      <div>
+          <button type="submit" class="btn btn-info mb-2">Зберегти</button>
+      </div>
+  </form>
 
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-        Видалити
-</button>
-
+  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+          Видалити
+  </button>
+</div>
 
 
 

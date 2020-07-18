@@ -1,26 +1,28 @@
 <h1>Медсестра</h1>
 
 
-<form method="POST" action="/employees/edit">
-    <div class="form-group">
-        <label for="name">Ім'я</label>
-        <input type="text" name="name" id="name" value="{{item.name}}" required>
-    </div>
-    <div class="form-group">
-        <label for="position">Посада</label>
-        <input type="text" name="position" id="position" value="{{item.position}}">
-    </div>
-    <div class="form-group">
-        <label for="desc">Опис</label>
-        <input type="text" name="desc" id="desc" value="{{item.description}}">
-    </div>
-    <input type="hidden" value="{{item.id}}" name="id">
-    <div>
-        <button type="submit" class="btn btn-primary mb-2">Зберегти</button>
-    </div>
-</form>
+<div class="form">
+    <form method="POST" action="/employees/edit">
+        <div class="form-group">
+            <label class="col-sm-2" for="name">Ім'я</label>
+            <input type="text" name="name" id="name" value="{{item.name}}" required>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2" for="position">Посада</label>
+            <input type="text" name="position" id="position" value="{{item.position}}">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2" for="desc">Опис</label>
+            <input type="text" name="desc" id="desc" value="{{item.description}}">
+        </div>
+        <input type="hidden" value="{{item.id}}" name="id">
+        <div>
+            <button type="submit" class="btn btn-info mb-2">Зберегти</button>
+        </div>
+    </form>
 
-<form action="/employees/delete" method="POST">
-    <input type="hidden" name="id" value="{{item.id}}">
-    <button class="btn btn-danger" type="submit">Видалити</button>
-</form>
+    <form action="/employees/delete" method="POST">
+        <input type="hidden" name="id" value="{{item.id}}">
+        <button class="btn btn-danger" type="submit">Видалити</button>
+    </form>
+</div>

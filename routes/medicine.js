@@ -11,7 +11,8 @@ router.get('/', async (req, res) => {
                 where: {
                     title: {
                         [Op.like]: `%${req.query.title}%`
-                    } 
+                    },
+                     isActive: true
                 }
             })
             console.log(items)
@@ -21,7 +22,11 @@ router.get('/', async (req, res) => {
                 res.sendStatus(404)
             }
         } else {
-            const medicines = await Medicine.findAll()
+            const medicines = await Medicine.findAll({
+                where: {
+                    isActive: true
+                }
+            })
             //console.log('MEDICINES = ', medicines)
             res.render('medicine', {
                 medicines,
@@ -50,7 +55,7 @@ router.get('/:id/edit', async (req, res) => {
 
 router.post('/edit', async (req, res) => {
     try {
-        const item = Medicine.update({title: req.body.title, description: req.body.desc}, {
+        const item = await Medicine.update({title: req.body.title, description: req.body.desc}, {
             where: {
                 id: req.body.id
             }
@@ -63,12 +68,18 @@ router.post('/edit', async (req, res) => {
 
 router.post('/delete', async (req, res) => {
     try {
-        const item = Medicine.destroy({
-            where: {
-                id: req.body.id
-            }
-        })
-        res.status(201).redirect('/medicine')
+        const medicine = await Medicine.findByPk(req.body.id)
+        if (medicine.remainder === 0) {
+            const item = await Medicine.update({isActive: false},{
+                where: {
+                    id: req.body.id
+                }
+            })
+            res.status(201).redirect('/medicine')
+        } else {
+            res.redirect('/medicine')
+        }
+        
     } catch(e) {
         res.status(500).render('500')
     }

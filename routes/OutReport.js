@@ -35,10 +35,10 @@ router.post('/', async (req, res) => {
 
         //  Select dictinct records and sum theirs quantity and group by MedicineId
         const consumptions = await Consumption.findAll({
-            attributes: ['MedicineId', [sequelize.fn('sum', sequelize.col('quantity')), 'quantity'], 'date'],
+            attributes: ['MedicineId', [sequelize.fn('sum', sequelize.col('quantity')), 'quantity']],
             group: 'MedicineId',
             where: {
-                date: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
+                createdAt: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
                 MedicineId: {
                     [Op.in]: arrBodyId
                 }
@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
         //  Select ALL records of Consumptions TABLE
         const extendedConsumptions = await Consumption.findAll({
             where: {
-                date: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
+                createdAt: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
                 MedicineId: {
                     [Op.in]: arrBodyId
                 }
@@ -63,13 +63,24 @@ router.post('/', async (req, res) => {
                 model: Medicine,
                 required: true,
                 attributes: ['title']
-            }]
+            },
+            {
+                model: Employee,
+                required:true,
+                attributes: ['name']
+            },
+            {
+              model: Patient,
+              required: true,
+              attributes: ['name']  
+            }
+            ]
         })
 
         //  Select all records in Consumptions TABLE and SORT it by MedicineId
         const singleConsumptions = await Promise.all(consumptions.map(async item =>  await Consumption.findAll({
             where:   {              
-                date: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
+                createdAt: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
                 MedicineId: item.MedicineId
             },
             include: [{
@@ -109,7 +120,10 @@ router.post('/', async (req, res) => {
 
 
         //  Change a format Date to view '01.01.01'
-        newArrOfConsumptions.forEach(elem => elem.item.forEach(item => item.newDate = dateToView(item.date)))
+        newArrOfConsumptions.forEach(elem => elem.item.forEach(item => item.newDate = dateToView(item.createdAt)))
+
+
+       
 
 
         res.render('outReport', {
@@ -117,7 +131,9 @@ router.post('/', async (req, res) => {
             newArrOfConsumptions,
             allRemainders,
             from: req.body.from,
-            to: req.body.to
+            to: req.body.to,
+            isReport: true,
+            title: 'Звіт по розходу'
         })
 
     } catch(e) {

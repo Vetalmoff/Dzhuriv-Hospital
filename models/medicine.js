@@ -22,12 +22,16 @@ const medicine = sequelize.define('Medicine', {
     description: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 })
 
-medicine.hasMany(Incoming, {onDelete: 'RESTRICT', onUpdate: 'cascade'})
+medicine.hasMany(Incoming, {onDelete: 'RESTRICT', onUpdate: 'RESTRICT'})
 Incoming.belongsTo(medicine)
-medicine.hasMany(Consumption, {onDelete: 'RESTRICT', onUpdate: 'cascade'})
+medicine.hasMany(Consumption, {onDelete: 'RESTRICT', onUpdate: 'RESTRICT'})
 Consumption.belongsTo(medicine)
 
 
