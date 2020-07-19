@@ -6,7 +6,7 @@ const Medicine = require('./medicine')
 const Employee = require('./employee')
 const Patient = require('./patient')
 
-const user = sequelize.define('user', {
+const user = sequelize.define('User', {
     id: {
         primaryKey: true,
         autoIncrement: true,
@@ -21,6 +21,10 @@ const user = sequelize.define('user', {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
+    },
+    password: {
+        type: DataTypes.STRING,
+        defaultValue: ''
     },
     isAdmin: {
         type: DataTypes.BOOLEAN,

@@ -1,7 +1,7 @@
 const{Router} = require('express')
 const { sync } = require('../utils/db')
 const router = Router()
-//const User = router('../models/user')
+const User = require('../models/user')
 
 router.get('/login', async (req, res) => {
     try {
@@ -26,8 +26,20 @@ router.get('/logout', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
+        const user = await User.findOne({
+            where: {
+                email: 'vetalmoff@gmail.com'
+            }
+        })
         req.session.isAuthenticated = true
-        res.redirect('/')
+        req.session.user = user
+        req.session.save(err => {
+            if (err) {
+                throw err
+            }
+            res.redirect('/')
+        })
+
     } catch(e) {
         console.log(e)
     }
