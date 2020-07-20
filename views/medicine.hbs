@@ -8,13 +8,18 @@
             <th scope="col">Назва</th>
             <th scope="col">Залишок</th>
             <th scope="col">Опис</th>
-            <th scope="col"></th>
+            {{#if isActive}}
+                <th scope="col"></th> 
+            {{else}}
+                <th scope="col"></th>
+                <th scope="col"></th>
+            {{/if}}
             </tr>
         </thead>
         {{#each medicines}}
             <tbody>
                 <tr>
-                <th scope="row">{{@index}}</th>
+                <th scope="row">{{index @index}}</th>
                 <td>{{title}}</td>
                 <td>{{remainder}}</td>
                 <td>{{description}}</td>
@@ -22,6 +27,13 @@
                     <td><a class="btn btn-info" href="/medicine/{{id}}/edit">Редагувати</a></td>
                 {{else}}
                     <td>Використовувалися з : {{newCreatedAt}}  по  {{newUpdatedAt}}</td>
+                    <td>
+                        <form action="/medicine/restore" method="POST">
+                            <input name="restoredId" type="hidden" value="{{id}}">
+                            <input type="hidden" name="_csrf" value="{{@root.csrf}}">
+                            <button class="btn btn-info" type="submit">Відновити</button>
+                        </form>
+                    </td>
                 {{/if}}
                 </tr>
             </tbody>

@@ -26,12 +26,15 @@ const auth = require('./middleware/auth')
 const csurf = require('csurf')
 
 
+
+
 const PORT = process.env.PORT || 3000
 
 app.engine('hbs', exphbs({
     handlebars: allowInsecurePrototypeAccess(Handlebars),
     defaultLayout: 'main',
-    extname: 'hbs'
+    extname: 'hbs',
+    helpers: require('./utils/hbd-helpers')
 }));
 
 app.set('view engine', 'hbs')

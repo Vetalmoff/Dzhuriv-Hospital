@@ -1,11 +1,20 @@
 const {Router} = require('express')
 const router = Router()
 const Patient = require('../models/patient')
+const patient = require('../models/patient')
 
 
 router.get('/', async (req, res) => {
     try {
         const patients = await Patient.findAll()
+        patients.forEach(item => {
+            const date1 = new Date(Date.now()) 
+            const date2 = new Date(item.dateOfBirdth)
+            console.log('date1 = ', date1, 'data2 = ', date2)
+            const diffTime = Math.abs(date2 - date1)
+            const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365))
+            item.age = diffYears
+        })
         console.log(patients)
         res.render('patients', {
             patients,

@@ -16,13 +16,13 @@ router.post('/', async (req, res) => {
         console.log( 'Body = ', req.body)
         const newPatient = await Patient.create({
             name: req.body.name,
-            age: +req.body.age,
+            dateOfBirdth: req.body.dateOfBirdth,
             description: req.body.desc
         })
        
         res.redirect('/patients')
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
 
 })

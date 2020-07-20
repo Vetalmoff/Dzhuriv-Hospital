@@ -3,6 +3,10 @@ const router = Router()
 const Medicine = require('../models/medicine')
 const { Op } = require('sequelize')
 const dateToView = require('../middleware/dateToView')
+const Handlebars = require('handlebars')
+
+
+
 
 
 
@@ -58,7 +62,7 @@ router.get('/', async (req, res) => {
         }
         
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
 })
 
@@ -71,7 +75,7 @@ router.get('/:id/edit', async (req, res) => {
             item
         })
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
 })
 
@@ -84,7 +88,20 @@ router.post('/edit', async (req, res) => {
         })
         res.status(201).redirect('/medicine')
     } catch(e) {
-        res.status(500).render('500')    
+        throw e
+    }
+})
+
+router.post('/restore', async (req, res) => {
+    try {
+        const item = await Medicine.update({isActive: true}, {
+            where: {
+                id: req.body.restoredId
+            }
+        })
+        res.status(201).redirect('/medicine')
+    } catch(e) {
+        throw e
     }
 })
 
@@ -103,7 +120,7 @@ router.post('/delete', async (req, res) => {
         }
         
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
 })
 

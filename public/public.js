@@ -71,3 +71,8 @@ $(document).ready(() => {
     });
   });
   
+
+  Handlebars.registerHelper('index', function(idx) {
+    idx = Handlebars.escapeExpression(idx);      //экранирование выражения
+    return new Handlebars.SafeString(idx + 1);
+  });

@@ -61,7 +61,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/register', async (req, res) => {
     try {
-        const {name, email, password, passwordConfirm} = req.body
+        const {name, email, password} = req.body
         const candidate = await User.findOne({where: {
             email
         }})

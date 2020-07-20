@@ -44,7 +44,7 @@ router.post('/', async(req, res) => {
             include: [{
                 model: Medicine,
                 required: true,
-                attributes: ['title']
+                attributes: ['title', 'isActive']
             }]
         })
 
@@ -61,7 +61,7 @@ router.post('/', async(req, res) => {
             include: [{
                 model: Medicine,
                 required: true,
-                attributes: ['title']
+                attributes: ['title', 'isActive']
             }]
         })) ) 
         console.log('PromisAll = ', singleIncomings)
@@ -74,7 +74,8 @@ router.post('/', async(req, res) => {
         const newArrOfIncomings = singleIncomings.map((item, index) => ({
             item,
             name: item[0].Medicine.title,
-            sum: allRemainders[index]
+            sum: allRemainders[index],
+            isActive: item[0].Medicine.isActive
         }))
         console.log(newArrOfIncomings)
 

@@ -25,12 +25,18 @@
                     
                     {{#each newArrOfConsumptions}}
                         <tr>
-                        <td scope="row">{{@index}}</td>
+                        <td scope="row">{{index @index}}</td>
                         <td>
                             <div class="dropdown">
-                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{name}}
-                                </button>
+                                {{#if isActive}}
+                                    <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{name}}
+                                    </button>
+                                {{else}}
+                                    <button  class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{name}}
+                                    </button>
+                                {{/if}}
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     {{#each this.item}}
                                         <a class="dropdown-item" href="#"><b>{{Medicine.title}}</b>,   кількість :  <b>{{quantity}}</b> , дата:  <b>{{newDate}}</b>, медсестра : <b>{{Employee.name}}</b>, пацієнт : <b>{{Patient.name}}</b></a>

@@ -19,7 +19,7 @@
   </form>
 
   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-          Видалити
+          Списати
   </button>
 </div>
 
@@ -37,13 +37,13 @@
         </button>
       </div>
       <div class="modal-body">
-        <h5>Ви дійсно хочете видалити {{item.title}} ?</h5>
+        <h5>Ви дійсно хочете списати <b> {{item.title}}</b> ?</h5>
       </div>
       <div class="modal-footer">
         <form action="/medicine/delete" method="POST">
             <input type="hidden" name="id" value="{{item.id}}">
             <input type="hidden" name="_csrf" value="{{csrf}}">
-            <button class="btn btn-danger" type="submit">Видалити</button>
+            <button class="btn btn-danger" type="submit">Списати</button>
         </form>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
       </div>
