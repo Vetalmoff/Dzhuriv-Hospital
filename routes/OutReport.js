@@ -30,8 +30,46 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     try {   
 
-        const arrBodyId = req.body.id.split('  ')
-  
+        const arrBodyMedicine = req.body.medicine.split('  ')
+        const arrBodyEmployee = req.body.employee.split('  ')
+        const arrBodyPatient = req.body.patient.split('  ')
+        let employee, 
+            patient,
+            medicine
+
+        
+        if (arrBodyMedicine.length === 1) {
+            medicine = await Medicine.findOne({
+                where: {
+                    id: {
+                        [Op.in]: arrBodyMedicine
+                    }
+                }
+            })
+        }
+
+        if (arrBodyEmployee.length === 1) {
+            employee = await Employee.findOne({
+                where: {
+                    id: {
+                        [Op.in]: arrBodyEmployee
+                    }
+                }
+            })
+        }
+        
+
+        if (arrBodyPatient.length === 1) {
+            patient = await Patient.findOne({
+                where: {
+                    id: {
+                        [Op.in]: arrBodyPatient
+                    }
+                }
+            })
+        } 
+
+
 
         //  Select dictinct records and sum theirs quantity and group by MedicineId
         const consumptions = await Consumption.findAll({
@@ -40,7 +78,13 @@ router.post('/', async (req, res) => {
             where: {
                 createdAt: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
                 MedicineId: {
-                    [Op.in]: arrBodyId
+                    [Op.in]: arrBodyMedicine
+                },
+                employee: {
+                    [Op.in]: arrBodyEmployee
+                },
+                patient: {
+                    [Op.in]: arrBodyPatient
                 }
             },
             include: [{
@@ -56,7 +100,13 @@ router.post('/', async (req, res) => {
             where: {
                 createdAt: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
                 MedicineId: {
-                    [Op.in]: arrBodyId
+                    [Op.in]: arrBodyMedicine
+                },
+                employee: {
+                    [Op.in]: arrBodyEmployee
+                },
+                patient: {
+                    [Op.in]: arrBodyPatient
                 }
             },
             include: [{
@@ -77,7 +127,7 @@ router.post('/', async (req, res) => {
             ]
         })
 
-        //  Select all records in Consumptions TABLE and SORT it by MedicineId
+        //  Select all records in Consumptions TABLE and Group it by MedicineId
         const singleConsumptions = await Promise.all(consumptions.map(async item =>  await Consumption.findAll({
             where:   {              
                 createdAt: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
@@ -133,7 +183,10 @@ router.post('/', async (req, res) => {
             from: req.body.from,
             to: req.body.to,
             isReport: true,
-            title: 'Звіт по розходу'
+            title: 'Звіт по розходу',
+            employee,
+            patient,
+            medicine
         })
 
     } catch(e) {

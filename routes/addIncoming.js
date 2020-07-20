@@ -5,7 +5,11 @@ const Medicine = require('../models/medicine')
 
 router.get('/', async (req, res) => {
     try {
-        const allMedicines = await Medicine.findAll()
+        const allMedicines = await Medicine.findAll({
+            where: {
+                isActive: true
+            }
+        })
         res.render('addIncoming', {
             title: 'Прихід',
             isIncoming: true,

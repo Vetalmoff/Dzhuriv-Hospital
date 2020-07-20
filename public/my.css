@@ -16,6 +16,14 @@ h1 {
     padding: 1rem;
 }
 
+h2 {
+  padding-left: 1rem;
+}
+
+.table {
+  padding-top: 1rem;
+}
+
 .auth {
     padding-top: 2rem;
 }

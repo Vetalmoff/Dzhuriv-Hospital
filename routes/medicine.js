@@ -2,6 +2,8 @@ const {Router} = require('express')
 const router = Router()
 const Medicine = require('../models/medicine')
 const { Op } = require('sequelize')
+const dateToView = require('../middleware/dateToView')
+
 
 
 router.get('/', async (req, res) => {
@@ -22,17 +24,37 @@ router.get('/', async (req, res) => {
                 res.sendStatus(404)
             }
         } else {
-            const medicines = await Medicine.findAll({
-                where: {
-                    isActive: true
-                }
-            })
-            //console.log('MEDICINES = ', medicines)
-            res.render('medicine', {
-                medicines,
-                title: 'Ліки',
-                isCatalog: true
-            })
+            if (req.query.isActive) {
+                const medicines = await Medicine.findAll({
+                    where: {
+                        isActive: false
+                    }
+                })
+                medicines.forEach(item => {
+                    item.newCreatedAt = dateToView(item.createdAt)
+                    item.newUpdatedAt = dateToView(item.updatedAt)
+                })
+                console.log(medicines)
+
+                res.render('medicine', {
+                    medicines,
+                    title: 'Списані ліки',
+                    isCatalog: true
+                })
+            } else {
+                const medicines = await Medicine.findAll({
+                    where: {
+                        isActive: true
+                    }
+                })
+
+                res.render('medicine', {
+                    medicines,
+                    title: 'Ліки',
+                    isCatalog: true
+                })
+            }
+            
         }
         
     } catch(e) {

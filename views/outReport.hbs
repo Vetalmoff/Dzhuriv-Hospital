@@ -1,5 +1,17 @@
 <h1>Звіт по розходу з : {{from}} по {{to}}</h1>
 
+{{#if medicine}}
+    <h2>по медикаменту : {{medicine.title}}</h2>
+{{/if}}
+
+{{#if employee}}
+    <h2>по співробітнику : {{employee.name}}</h2>
+{{/if}}
+
+{{#if patient}}
+    <h2>по пацієнту : {{patient.name}}</h2>
+{{/if}}
+
     {{#if newArrOfConsumptions.length}}
         <table class="table">
             <thead class="thead-dark">

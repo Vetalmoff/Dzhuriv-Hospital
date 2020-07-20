@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const { DB, user, password, host, port } = require('./keys/keys')
 const exphbs = require('express-handlebars')
 const Handlebars = require('handlebars')
 const path = require('path')
@@ -20,6 +21,10 @@ const outReportRouter = require('./routes/OutReport')
 const errorHandler404 = require('./middleware/errorHandler404')
 const authRouter = require('./routes/auth')
 const varMiddleware = require('./middleware/variables')
+const MySQLStore = require('express-mysql-session')(session)
+const auth = require('./middleware/auth')
+const csurf = require('csurf')
+
 
 const PORT = process.env.PORT || 3000
 
@@ -31,29 +36,43 @@ app.engine('hbs', exphbs({
 
 app.set('view engine', 'hbs')
 app.set('views', 'views')
+const sessionStore = new MySQLStore({
+  host,
+  port,
+  user,
+  password,
+  database: DB
+})
+
+
+
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(session({
-  secret: 'some secret value',
+  store: sessionStore,
+  key: 'session_cookie_name',
+  secret: 'session_cookie_secret',
   resave: false,
   saveUninitialized: false
 }))
+app.use(csurf())
 app.use(varMiddleware)
 
 
+
 app.use('/', homeRoutes)
-app.use('/medicine', medicineRouter)
-app.use('/employees', employeesRouter)
-app.use('/patients', patientRouter)
-app.use('/addMedicine', addMedicineRouter)
-app.use('/addEmployee', addEmployeeRouter)
-app.use('/addPatient', addPatientRouter)
-app.use('/addIncoming', addIncomingRouter)
-app.use('/addConsumption', addConsumptionRouter)
-app.use('/inReport', InRerportRouter)
-app.use('/outReport', outReportRouter)
+app.use('/medicine', auth, medicineRouter)
+app.use('/employees', auth, employeesRouter)
+app.use('/patients', auth, patientRouter)
+app.use('/addMedicine', auth, addMedicineRouter)
+app.use('/addEmployee', auth, addEmployeeRouter)
+app.use('/addPatient', auth, addPatientRouter)
+app.use('/addIncoming', auth, addIncomingRouter)
+app.use('/addConsumption', auth, addConsumptionRouter)
+app.use('/inReport', auth, InRerportRouter)
+app.use('/outReport', auth, outReportRouter)
 app.use('/auth', authRouter)
 
 app.use(errorHandler404)

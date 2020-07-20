@@ -15,6 +15,7 @@
       <div>
           <button type="submit" class="btn btn-info mb-2">Зберегти</button>
       </div>
+      <input type="hidden" name="_csrf" value="{{csrf}}">
   </form>
 
   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
@@ -41,6 +42,7 @@
       <div class="modal-footer">
         <form action="/medicine/delete" method="POST">
             <input type="hidden" name="id" value="{{item.id}}">
+            <input type="hidden" name="_csrf" value="{{csrf}}">
             <button class="btn btn-danger" type="submit">Видалити</button>
         </form>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>

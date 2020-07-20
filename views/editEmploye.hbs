@@ -19,10 +19,12 @@
         <div>
             <button type="submit" class="btn btn-info mb-2">Зберегти</button>
         </div>
+        <input type="hidden" name="_csrf" value="{{csrf}}">
     </form>
 
     <form action="/employees/delete" method="POST">
         <input type="hidden" name="id" value="{{item.id}}">
+        <input type="hidden" name="_csrf" value="{{csrf}}">
         <button class="btn btn-danger" type="submit">Видалити</button>
     </form>
 </div>

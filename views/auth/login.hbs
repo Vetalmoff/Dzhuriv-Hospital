@@ -11,14 +11,15 @@
     <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="home-tab">
       <form method="POST" action="/auth/login">
         <div class="form-group">
-          <label for="exampleInputEmail1">Введіть свій Email</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          <label for="emailLogin">Введіть свій Email</label>
+          <input type="email" class="form-control" id="emailLogin" name="email" aria-describedby="emailHelpForLogin" required>
+          <small id="emailHelpForLogin" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Введіть пароль</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" required>
+          <label for="passwordLogin">Введіть пароль</label>
+          <input type="password" class="form-control" id="passwordLogin" name="password" required>
         </div>
+        <input type="hidden" name="_csrf" value="{{csrf}}">
         <button type="submit" class="btn btn-info">Увійти</button>
       </form>
     </div>
@@ -26,18 +27,24 @@
     <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="profile-tab">
       <form method="POST" action="/auth/register">
         <div class="form-group">
-          <label for="exampleInputEmail1">Введіть свій Emai</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          <label for="nameRegister">Введіть своє ім'я</label>
+          <input type="text" class="form-control" id="nameRegister" name="name" aria-describedby="nameHelp" required>
+          <small id="nameHelp" class="form-text text-muted"></small>
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Введіть пароль</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" required>
+          <label for="emailRegister">Введіть свій Emai</label>
+          <input type="email" class="form-control" id="emailRegister" name="email" aria-describedby="emailHelpRegister" required>
+          <small id="emailHelpRegister" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword2">Введіть пароль ще раз</label>
-          <input type="password" class="form-control" id="exampleInputPassword2" required>
+          <label for="password">Введіть пароль</label>
+          <input type="password" class="form-control" id="password" name="password" required>
         </div>
+        <div class="form-group">
+          <label for="passwordConfirm">Введіть пароль ще раз</label>
+          <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" required>
+        </div>
+        <input type="hidden" name="_csrf" value="{{csrf}}">
         <button type="submit" class="btn btn-info">Зареєструваится</button>
       </form>
     </div>

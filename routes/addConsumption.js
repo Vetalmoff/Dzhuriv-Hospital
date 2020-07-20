@@ -1,4 +1,4 @@
-const {Router} = require('express')
+const {Router, request} = require('express')
 const router = Router()
 const Consumption = require('../models/out')
 const Medicine = require('../models/medicine')
@@ -7,7 +7,11 @@ const Patient = require('../models/patient')
 
 router.get('/', async (req, res) => {
     try {
-        const allMedicines = await Medicine.findAll()
+        const allMedicines = await Medicine.findAll({
+            where: {
+                isActive: true
+            }
+        })
         const allEmployees = await Employee.findAll()
         const allPatients = await Patient.findAll()
         console.log(allMedicines)

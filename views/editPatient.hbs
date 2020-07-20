@@ -16,6 +16,7 @@
             <input type="text" name="desc" id="desc" value="{{item.description}}">
         </div>
         <input type="hidden" value="{{item.id}}" name="id">
+        <input type="hidden" name="_csrf" value="{{csrf}}">
         <div>
             <button type="submit" class="btn btn-info mb-2">Зберегти</button>
         </div>
@@ -23,6 +24,7 @@
 
     <form action="/patients/delete" method="POST">
         <input type="hidden" name="id" value="{{item.id}}">
+        <input type="hidden" name="_csrf" value="{{csrf}}">
         <button class="btn btn-danger" type="submit">Видалити</button>
     </form>
 </div>

@@ -26,15 +26,9 @@ const user = sequelize.define('User', {
         type: DataTypes.STRING,
         defaultValue: ''
     },
-    isAdmin: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false
-    },
-    isModerator: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false
+    role: {
+        type: DataTypes.ENUM('user', 'moderator', 'admin', 'superAdmin'),
+        defaultValue: 'admin'
     }
 
 })

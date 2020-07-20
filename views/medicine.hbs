@@ -18,7 +18,11 @@
                 <td>{{title}}</td>
                 <td>{{remainder}}</td>
                 <td>{{description}}</td>
-                <td><a class="btn btn-info" href="/medicine/{{id}}/edit">Редагувати</a></td>
+                {{#if isActive}}
+                    <td><a class="btn btn-info" href="/medicine/{{id}}/edit">Редагувати</a></td>
+                {{else}}
+                    <td>Використовувалися з : {{newCreatedAt}}  по  {{newUpdatedAt}}</td>
+                {{/if}}
                 </tr>
             </tbody>
         {{/each}}
