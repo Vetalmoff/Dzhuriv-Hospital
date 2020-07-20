@@ -9,15 +9,27 @@
             <th scope="col">Кількість</th>
             </tr>
         </thead>
-        {{#each incomings}}
             <tbody>
-                <tr>
-                <th scope="row">{{@index}}</th>
-                <td>{{Medicine.title}}</td>
-                <td>{{quantity}}</td>
-                </tr>
+                {{#each newArrOfIncomings}}
+                        <tr>
+                        <td scope="row">{{@index}}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{name}}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    {{#each this.item}}
+                                        <a class="dropdown-item" href="#"><b>{{Medicine.title}}</b>,   кількість :  <b>{{quantity}}</b> , дата:  <b>{{newDate}}</b></a>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{sum}}</td>
+                        </tr>
+                        
+                    {{/each}}
             </tbody>
-        {{/each}}
 
                 
     </table>

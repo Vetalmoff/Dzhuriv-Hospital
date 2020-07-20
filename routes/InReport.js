@@ -7,6 +7,8 @@ const Incoming = require('../models/in')
 const Employee = require('../models/employee')
 const Patient = require('../models/patient')
 const sequelize = require('../utils/db')
+const dateToView = require('../middleware/dateToView')
+
 
 
 router.get('/', async (req, res) => {
@@ -46,8 +48,38 @@ router.post('/', async(req, res) => {
             }]
         })
 
-        console.log(incomings)
-        console.log('Form =', req.body.id)
+        // console.log(incomings)
+        // console.log('Form =', req.body.id)
+
+
+        //  Select all records in Incomings TABLE and Group it by MedicineId
+        const singleIncomings = await Promise.all(incomings.map(async item =>  await Incoming.findAll({
+            where:   {              
+                createdAt: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
+                MedicineId: item.MedicineId
+            },
+            include: [{
+                model: Medicine,
+                required: true,
+                attributes: ['title']
+            }]
+        })) ) 
+        console.log('PromisAll = ', singleIncomings)
+
+        //  Count all remainders group by MedicineId
+        const allRemainders = singleIncomings.map(item => item.reduce((sum, current) => sum + current.quantity, 0))
+        console.log(allRemainders)
+
+        //  Alter array of arrays to => array of objects with new keys : name, sum
+        const newArrOfIncomings = singleIncomings.map((item, index) => ({
+            item,
+            name: item[0].Medicine.title,
+            sum: allRemainders[index]
+        }))
+        console.log(newArrOfIncomings)
+
+        //  Change a format Date to view '01.01.01'
+        newArrOfIncomings.forEach(elem => elem.item.forEach(item => item.newDate = dateToView(item.createdAt)))
         
 
         res.render('inReport', {
@@ -55,11 +87,12 @@ router.post('/', async(req, res) => {
             from: req.body.from,
             to: req.body.to,
             isReport: true,
-            title: 'Звіт по приходу'
+            title: 'Звіт по приходу',
+            newArrOfIncomings
         })
 
     } catch(e) {
-        res.render('500')
+        throw e
     }
 })
 

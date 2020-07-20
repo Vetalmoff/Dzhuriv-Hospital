@@ -145,7 +145,7 @@ router.post('/', async (req, res) => {
         const allMedicineId = extendedConsumptions.map(item => item.MedicineId)
         console.log(allMedicineId)
 
-        //  Lost only uniq MedicineId
+        //  Keep only uniq MedicineId
         const uniqueMedicineId = [...new Set(allMedicineId)] 
         console.log(uniqueMedicineId)
 
