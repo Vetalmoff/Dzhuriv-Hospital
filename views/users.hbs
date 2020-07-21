@@ -1,0 +1,27 @@
+<h1>Користувачі</h1>
+
+{{#if users.length}}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Ім'я</th>
+            <th scope="col">Електронна пошта</th>
+            <th scope="col">Позиція</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+                    <tr>
+                    <th scope="row">{{index @index}}</th>
+                    <td>{{name}}</td>
+                    <td>{{email}}</td>
+                    <td>{{{roles this @root.csrf}}}</td>
+                    </tr>
+            {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <h1>Нікого не має</h1>
+{{/if}}
+

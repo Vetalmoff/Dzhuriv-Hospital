@@ -38,12 +38,26 @@ router.post('/login', async (req, res) => {
         if (candidate) {
             const areTheSame = await bcrypt.compare(password, candidate.password)
             if (areTheSame) {
-                req.session.isAdmin = true
+                switch (candidate.role) {
+                    case 'user':
+                        req.session.isUser = true
+                        break
+                    case 'moderator':
+                        req.session.isModerator = true
+                        break
+                    case 'admin':
+                        req.session.isAdmin = true
+                        break
+                    case 'superAdmin':
+                        req.session.isSuperAdmin = true
+                        break
+                }
                 req.session.user = candidate
                 req.session.save(err => {
                     if (err) {
                         throw err
                     }
+                    console.log('req.session ================== ', req.session)
                     res.redirect('/')
                 })
             } else {

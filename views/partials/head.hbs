@@ -26,7 +26,8 @@
                 {{/if}}
             </li>
 
-            {{#if isAdmin}}
+            
+            {{#if isSuperAdmin}}
 
                 <li class="nav-item dropdown">
                     {{#if isCatalog}}
@@ -44,6 +45,9 @@
                     <a class="dropdown-item" href="/patients">Пацієнти</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/medicine?isActive=true">Списані ліки</a>
+                    {{#if isSuperAdmin}}
+                        <a class="dropdown-item" href="/users">Користувачі</a>
+                    {{/if}}
                 </li>
                 <li class="nav-item dropdown">
                     {{#if isAdd}}
