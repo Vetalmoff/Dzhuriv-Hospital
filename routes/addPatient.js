@@ -17,7 +17,8 @@ router.post('/', async (req, res) => {
         const newPatient = await Patient.create({
             name: req.body.name,
             dateOfBirdth: req.body.dateOfBirdth,
-            description: req.body.desc
+            description: req.body.desc,
+            UserId: req.session.user.id
         })
        
         res.redirect('/patients')

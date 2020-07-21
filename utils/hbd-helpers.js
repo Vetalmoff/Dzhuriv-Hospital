@@ -1,3 +1,5 @@
+const user = require("../models/user")
+
 module.exports = {
     index(idx) {
         let i = idx + 1
@@ -69,6 +71,12 @@ module.exports = {
                 break
         }
 
+    },
+    user(role, options) {
+        console.log('this ==============', this)
+        if (role === 'user') {
+            return options.fn(this)
+        } 
     }
 }
 

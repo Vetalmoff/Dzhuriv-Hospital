@@ -18,7 +18,9 @@
                 <td>{{name}}</td>
                 <td>{{position}}</td>
                 <td>{{description}}</td>
-                <td><a class="btn btn-info" href="/employees/{{id}}/edit">Редагувати</a></td>
+                {{#unless @root.isModerator}}
+                    <td><a class="btn btn-info" href="/employees/{{id}}/edit">Редагувати</a></td>
+                {{/unless}}
                 </tr>
             </tbody>
         {{/each}}

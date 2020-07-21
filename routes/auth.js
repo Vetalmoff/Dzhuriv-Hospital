@@ -52,6 +52,7 @@ router.post('/login', async (req, res) => {
                         req.session.isSuperAdmin = true
                         break
                 }
+                req.session.role = candidate.role
                 req.session.user = candidate
                 req.session.save(err => {
                     if (err) {

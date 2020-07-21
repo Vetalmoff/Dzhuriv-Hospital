@@ -15,17 +15,13 @@ router.post('/', async (req, res) => {
     try {
         const newPreparat = await Medicine.create({
             title: req.body.title,
-            description: req.body.desc
+            description: req.body.desc,
+            UserId: req.session.user.id
         })
        
         res.redirect('/medicine')
     } catch(e) {
-        console.log(e.message)
-        if (e.message === 'Validation error') {
-            res.render('validationError')
-        } else {
-            res.status(500).render('500')
-        }
+        throw e        
     }
 
 })

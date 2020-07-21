@@ -23,18 +23,22 @@
                 <td>{{title}}</td>
                 <td>{{remainder}}</td>
                 <td>{{description}}</td>
-                {{#if isActive}}
-                    <td><a class="btn btn-info" href="/medicine/{{id}}/edit">Редагувати</a></td>
-                {{else}}
-                    <td>Використовувалися з : {{newCreatedAt}}  по  {{newUpdatedAt}}</td>
-                    <td>
-                        <form action="/medicine/restore" method="POST">
-                            <input name="restoredId" type="hidden" value="{{id}}">
-                            <input type="hidden" name="_csrf" value="{{@root.csrf}}">
-                            <button class="btn btn-info" type="submit">Відновити</button>
-                        </form>
-                    </td>
-                {{/if}}
+                {{#unless @root.isModerator}}
+                    {{#if isActive}}
+                        <td><a class="btn btn-info" href="/medicine/{{id}}/edit">Редагувати</a></td>
+                    {{else}}
+                        <td>Використовувалися з : {{newCreatedAt}}  по  {{newUpdatedAt}}</td>
+                        {{#if @root.isSuperAdmin}}
+                            <td>
+                                <form action="/medicine/restore" method="POST">
+                                    <input name="restoredId" type="hidden" value="{{id}}">
+                                    <input type="hidden" name="_csrf" value="{{@root.csrf}}">
+                                    <button class="btn btn-info" type="submit">Відновити</button>
+                                </form>
+                            </td>
+                        {{/if}}
+                    {{/if}}
+                {{/unless}}
                 </tr>
             </tbody>
         {{/each}}

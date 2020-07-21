@@ -3,6 +3,7 @@ const { Op, where, Sequelize } = require("sequelize")
 const router = Router()
 const Consumption = require('../models/out')
 const Medicine = require('../models/medicine')
+const User = require('../models/user')
 const Incoming = require('../models/in')
 const Employee = require('../models/employee')
 const Patient = require('../models/patient')
@@ -41,11 +42,18 @@ router.post('/', async(req, res) => {
                     [Op.in]: arrBody
                 }
             },
+            order: ['createdAt'],
             include: [{
                 model: Medicine,
                 required: true,
                 attributes: ['title', 'isActive']
-            }]
+            },
+            {
+                model: User,
+                required: true,
+                attributes: ['email', 'name']
+            }
+            ]
         })
 
         // console.log(incomings)
@@ -58,11 +66,18 @@ router.post('/', async(req, res) => {
                 createdAt: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
                 MedicineId: item.MedicineId
             },
+            order: ['createdAt'],
             include: [{
                 model: Medicine,
                 required: true,
                 attributes: ['title', 'isActive']
-            }]
+            },
+            {
+                model: User,
+                required: true,
+                attributes: ['email', 'name']
+            }
+            ]
         })) ) 
         console.log('PromisAll = ', singleIncomings)
 

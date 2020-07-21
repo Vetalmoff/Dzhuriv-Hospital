@@ -57,7 +57,8 @@ router.post('/', async (req, res) => {
                 MedicineId: +id,
                 quantity: +quantity,
                 employee: employeeName,
-                patient: patientName
+                patient: patientName,
+                UserId: req.session.user.id
             })
     
             res.redirect('/medicine')

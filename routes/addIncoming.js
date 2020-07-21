@@ -35,7 +35,8 @@ router.post('/', async (req, res) => {
 
         const incoming = await Incoming.create({
             MedicineId: +req.body.id,
-            quantity: +req.body.quantity
+            quantity: +req.body.quantity,
+            UserId: req.session.user.id
         })
 
         res.redirect('/medicine')

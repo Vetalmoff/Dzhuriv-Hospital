@@ -6,6 +6,7 @@ const Medicine = require('../models/medicine')
 const Consumption = require('../models/out')
 const Employee = require('../models/employee')
 const Patient = require('../models/patient')
+const User = require('../models/user')
 const { sum } = require('../models/out')
 const dateToView = require('../middleware/dateToView')
 
@@ -87,10 +88,16 @@ router.post('/', async (req, res) => {
                     [Op.in]: arrBodyPatient
                 }
             },
+            order: ['createdAt'],
             include: [{
                 model: Medicine,
                 required: true,
                 attributes: ['title', 'isActive']
+            },
+            {
+                model: User,
+                required: true,
+                attributes: ['email', 'name']
             }]
         })
 
@@ -109,6 +116,7 @@ router.post('/', async (req, res) => {
                     [Op.in]: arrBodyPatient
                 }
             },
+            order: ['createdAt'],
             include: [{
                 model: Medicine,
                 required: true,
@@ -123,6 +131,11 @@ router.post('/', async (req, res) => {
               model: Patient,
               required: true,
               attributes: ['name']  
+            },
+            {
+                model: User,
+                required: true,
+                attributes: ['email', 'name']
             }
             ]
         })
@@ -133,10 +146,16 @@ router.post('/', async (req, res) => {
                 createdAt: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
                 MedicineId: item.MedicineId
             },
+            order: ['createdAt'],
             include: [{
                 model: Medicine,
                 required: true,
                 attributes: ['title', 'isActive']
+            },
+            {
+                model: User,
+                required: true,
+                attributes: ['email', 'name']
             }]
         })) ) 
         console.log('PromisAll = ', singleConsumptions)

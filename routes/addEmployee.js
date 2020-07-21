@@ -17,7 +17,8 @@ router.post('/', async (req, res) => {
         const newEmployee = await Employee.create({
             name: req.body.name,
             position: req.body.position,
-            description: req.body.desc
+            description: req.body.desc,
+            UserId: req.session.user.id
         })
        
         res.redirect('/employees')
