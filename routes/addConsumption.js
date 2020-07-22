@@ -66,7 +66,7 @@ router.post('/', async (req, res) => {
                 UserId: req.session.user.id
             })
     
-            res.redirect('/medicine')
+            res.redirect(`/medicine?page=1&limit=10&isActive=1&order=title&upOrDown=ASC`)
         }
        
 

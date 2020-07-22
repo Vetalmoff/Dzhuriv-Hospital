@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
         throw e
     }
 })
-
+ 
 router.post('/', async (req, res) => {
     try {
         console.log(req.body)
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
             UserId: req.session.user.id
         })
 
-        res.redirect('/medicine')
+        res.redirect(`/medicine?page=1&limit=10&isActive=1&order=title&upOrDown=ASC`)
 
     } catch(e) {
         console.log('message =', e.message)

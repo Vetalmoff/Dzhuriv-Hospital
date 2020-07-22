@@ -43,9 +43,10 @@
         <div class="form-group">
           <label for="passwordConfirm">Введіть пароль ще раз</label>
           <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" required>
+          <small id="confirmHelpRegister" class="form-text text-muted"></small>
         </div>
         <input type="hidden" name="_csrf" value="{{csrf}}">
-        <button type="submit" class="btn btn-info">Зареєструваится</button>
+        <button type="submit" class="btn btn-info" id="submitButton">Зареєструваится</button>
       </form>
     </div>
   </div>

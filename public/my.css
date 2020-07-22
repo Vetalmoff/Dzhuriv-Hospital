@@ -11,6 +11,10 @@ body {
     max-width: 500px;
 }
 
+small.active {
+  color: red;
+}
+
 
 h1 {
     padding: 1rem;

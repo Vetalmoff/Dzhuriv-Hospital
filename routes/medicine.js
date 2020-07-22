@@ -5,60 +5,71 @@ const Incoming = require('../models/in')
 const Consumption = require('../models/out')
 const { Op } = require('sequelize')
 const dateToView = require('../middleware/dateToView')
+const dateToForm = require('../middleware/dateToForm')
 const Handlebars = require('handlebars')
 const authModerator = require('../middleware/authModerator')
 const authAdmin = require('../middleware/authAdmin')
 const authSuperAdmin = require('../middleware/authSuperAdmin')
+const pagination = require('../middleware/pagination')
 
 
 
 
 
-
-router.get('/', authModerator, async (req, res) => {
+ 
+router.get('/', authModerator, pagination(Medicine),  async (req, res) => {
     try {
+        req.session.page = +req.query.page
+        req.session.limit = +req.query.limit
+        req.session.isActive = req.query.isActive
+        req.session.order = req.query.order
+        req.session.upOrDown = req.query.upOrDown
+        const paginationMedicine = res.paginationResult
         if (req.query.title) {
             const items = await Medicine.findAll({
                 where: {
                     title: {
                         [Op.like]: `%${req.query.title}%`
                     },
-                     isActive: true
-                }
+                     isActive: '1'
+                },
+                order: [
+                    ['title', 'ASC']
+                ]
             })
-            console.log(items)
+            //console.log(items)
             if (items) {
                 res.json(items)
             } else {
                 res.sendStatus(404)
             }
         } else {
-            if (req.query.isActive) {
-                const medicines = await Medicine.findAll({
-                    where: {
-                        isActive: false
-                    }
-                })
-                medicines.forEach(item => {
+            if (req.query.isActive === '0') {
+                paginationMedicine.results.forEach(item => {
                     item.newCreatedAt = dateToView(item.createdAt)
                     item.newUpdatedAt = dateToView(item.updatedAt)
                 })
-                console.log(medicines)
+                console.log(paginationMedicine.results)
 
                 res.render('medicine', {
-                    medicines,
+                    limit: +req.query.limit,
+                    page: +req.query.page,
+                    order: req.query.order,
+                    upOrDown: req.query.upOrDown,
+                    isActive: req.query.isActive,
+                    paginationMedicine,
                     title: 'Списані ліки',
                     isCatalog: true
                 })
             } else {
-                const medicines = await Medicine.findAll({
-                    where: {
-                        isActive: true
-                    }
-                })
 
                 res.render('medicine', {
-                    medicines,
+                    limit: +req.query.limit,
+                    page: +req.query.page,
+                    order: req.query.order,
+                    upOrDown: req.query.upOrDown,
+                    paginationMedicine,
+                    isActive: req.query.isActive,
                     title: 'Ліки',
                     isCatalog: true
                 })
@@ -96,9 +107,9 @@ router.post('/edit', authAdmin, async (req, res) => {
                     id
                 }
             })
-            res.status(201).redirect('/medicine')
+            res.status(201).redirect(`/medicine?page=${req.session.page}&limit=${req.session.limit}&isActive=${req.session.isActive}&order=${req.session.order}&upOrDown=${req.session.upOrDown}`)
         } else {
-            res.redirect('/medicine')
+            res.redirect(`/medicine?page=${req.session.page}&limit=${req.session.limit}&isActive=${req.session.isActive}&order=${req.session.order}&upOrDown=${req.session.upOrDown}`)
         }
         
     } catch(e) {
@@ -113,7 +124,7 @@ router.post('/restore', authSuperAdmin, async (req, res) => {
                 id: req.body.restoredId
             }
         })
-        res.status(201).redirect('/medicine')
+        res.status(201).redirect(`/medicine?page=${req.session.page}&limit=${req.session.limit}&isActive=${req.session.isActive}&order=${req.session.order}&upOrDown=${req.session.upOrDown}`)
     } catch(e) {
         throw e
     }
@@ -128,9 +139,9 @@ router.post('/delete', authSuperAdmin, async (req, res) => {
                     id: req.body.id
                 }
             })
-            res.status(201).redirect('/medicine')
+            res.status(201).redirect(`/medicine?page=${req.session.page}&limit=${req.session.limit}&isActive=${req.session.isActive}&order=${req.session.order}&upOrDown=${req.session.upOrDown}`)
         } else {
-            res.redirect('/medicine')
+            res.redirect(`/medicine?page=${req.session.page}&limit=${req.session.limit}&isActive=${req.session.isActive}&order=${req.session.order}&upOrDown=${req.session.upOrDown}`)
         }
         
     } catch(e) {

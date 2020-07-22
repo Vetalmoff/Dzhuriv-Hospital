@@ -78,5 +78,6 @@ module.exports = {
             return options.fn(this)
         } 
     }
+   
 }
 

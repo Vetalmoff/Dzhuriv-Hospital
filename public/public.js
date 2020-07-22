@@ -47,6 +47,7 @@ $searchBtn.addEventListener('click', (event) => {
 })
 
 
+
 $(document).ready(() => {
     let url = location.href.replace(/\/$/, "");
    
@@ -70,5 +71,30 @@ $(document).ready(() => {
       history.replaceState(null, null, newUrl);
     });
   });
+
+
+
+
+const $confirm = document.querySelector('#passwordConfirm')
+const $password = document.querySelector('#password')
+const $confirmHelpRegister = document.querySelector('#confirmHelpRegister')
+const $submitButton = document.querySelector('#submitButton')
+
+if ( ($confirm)) {
+    $confirm.addEventListener('input', (event) => {
+        if ($confirm.value !== $password.value) {
+            $confirmHelpRegister.innerHTML = 'Паролі не співпадають!'
+            $confirmHelpRegister.classList.add('active')
+            $confirmHelpRegister.classList.remove('text-muted')
+            $submitButton.disabled=true
+        } else {
+            $confirmHelpRegister.innerHTML = ''
+            $confirmHelpRegister.classList.remove('active')
+            $confirmHelpRegister.classList.add('text-muted')
+            $submitButton.disabled=false
+        }
+    })
+}
   
+
 

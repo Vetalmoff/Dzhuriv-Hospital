@@ -95,7 +95,7 @@ router.post('/', authModerator, async (req, res) => {
                     [Op.in]: arrBodyPatient
                 }
             },
-            order: ['createdAt'],
+            order: [['quantity', 'DESC']],
             include: [{
                 model: Medicine,
                 required: true,
@@ -123,7 +123,7 @@ router.post('/', authModerator, async (req, res) => {
                     [Op.in]: arrBodyPatient
                 }
             },
-            order: ['createdAt'],
+            order: [['quantity', 'DESC']],
             include: [{
                 model: Medicine,
                 required: true,
@@ -153,7 +153,7 @@ router.post('/', authModerator, async (req, res) => {
                 createdAt: {[Op.and]: [{[Op.gte]: new Date(req.body.from)}, {[Op.lte]: new Date(req.body.to)}]},
                 MedicineId: item.MedicineId
             },
-            order: ['createdAt'],
+            order: [['quantity', 'DESC']],
             include: [{
                 model: Medicine,
                 required: true,
