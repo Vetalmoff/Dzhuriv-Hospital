@@ -1,9 +1,11 @@
 const {Router} = require('express')
 const router = Router()
 const Employee = require('../models/employee')
+const Consumption = require('../models/out')
+const authModerator = require('../middleware/authModerator')
+const authAdmin = require('../middleware/authAdmin')
 
-
-router.get('/', async (req, res) => {
+router.get('/', authModerator, async (req, res) => {
     try {
         const employees = await Employee.findAll()
         res.render('employees', {
@@ -12,12 +14,12 @@ router.get('/', async (req, res) => {
             isCatalog: true
         })
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
     
 })
 
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', authAdmin, async (req, res) => {
     try {
         const item = await Employee.findByPk(req.params.id) 
         console.log('Item = ', item)
@@ -26,33 +28,54 @@ router.get('/:id/edit', async (req, res) => {
             item
         })
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
 })
 
-router.post('/edit', async (req, res) => {
+router.post('/edit', authAdmin, async (req, res) => {
     try {
-        const item = Employee.update({name: req.body.name, position: req.body.position, description: req.body.desc}, {
+        const {id, name, position, desc} = req.body
+        const anyConsumptions = await Consumption.findOne({
             where: {
-                id: req.body.id
+                employee: id
             }
         })
+
+        if (!anyConsumptions) {
+            const item = await Employee.update({name, position, description: desc}, {
+                where: {
+                    id
+                }
+            })
+        }    
         res.redirect('/employees')
+        
+        
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
 })
 
-router.post('/delete', async (req, res) => {
+router.post('/delete', authAdmin, async (req, res) => {
     try {
-        const item = Employee.destroy({
+        const {id} = req.body
+        const anyConsumptions = await Consumption.findOne({
             where: {
-                id: req.body.id
+                employee: id
             }
         })
+
+        if (!anyConsumptions) {
+            const item = await Employee.destroy({
+                where: {
+                    id
+                }
+            })
+        }
         res.redirect('/employees')
+        
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
 })
 

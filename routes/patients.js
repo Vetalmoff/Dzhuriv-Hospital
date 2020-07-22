@@ -1,10 +1,12 @@
 const {Router} = require('express')
 const router = Router()
 const Patient = require('../models/patient')
-const patient = require('../models/patient')
+const Consumption = require('../models/out')
+const authModerator = require('../middleware/authModerator')
+const authAdmin = require('../middleware/authAdmin')
+const dateToForm = require('../middleware/dateToForm')
 
-
-router.get('/', async (req, res) => {
+router.get('/', authModerator, async (req, res) => {
     try {
         const patients = await Patient.findAll()
         patients.forEach(item => {
@@ -22,47 +24,67 @@ router.get('/', async (req, res) => {
             isCatalog: true
         })
     } catch(e) {
-        res.status(200).redirect('/')
+        throw e
     }
     
 })
 
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', authAdmin, async (req, res) => {
     try {
         const item = await Patient.findByPk(req.params.id) 
         console.log('Item = ', item)
+        item.onlyDate = dateToForm(item.dateOfBirdth) 
+        console.log(item.onlyDate)
         res.render('editPatient', {
             title: 'Редагувати',
             item
         })
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
 })
 
-router.post('/edit', async (req, res) => {
+router.post('/edit', authAdmin, async (req, res) => {
     try {
-        const item = Patient.update({name: req.body.name, age: req.body.age, description: req.body.desc}, {
+        const {id, name, dateOfBirdth, desc} = req.body
+        const anyConsumptions = await Consumption.findOne({
             where: {
-                id: req.body.id
+                patient: id
             }
         })
+
+        if (!anyConsumptions) {
+            const item = await Patient.update({name, dateOfBirdth, description: desc}, {
+                where: {
+                    id
+                }
+            })
+        }    
         res.redirect('/patients')
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
 })
 
-router.post('/delete', async (req, res) => {
+router.post('/delete', authAdmin, async (req, res) => {
     try {
-        const item = Patient.destroy({
+        const {id} = req.body
+        const anyConsumptions = await Consumption.findOne({
             where: {
-                id: req.body.id
+                patient: id
             }
         })
+
+        if (!anyConsumptions) {
+            const item = await Patient.destroy({
+                where: {
+                    id
+                }
+            })
+        }
         res.redirect('/patients')
     } catch(e) {
-        res.status(500).render('500')
+        throw e
     }
 })
 

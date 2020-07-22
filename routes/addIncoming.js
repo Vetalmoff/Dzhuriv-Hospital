@@ -8,7 +8,8 @@ router.get('/', async (req, res) => {
         const allMedicines = await Medicine.findAll({
             where: {
                 isActive: true
-            }
+            },
+            order: ['title']
         })
         res.render('addIncoming', {
             title: 'Прихід',
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
             allMedicines
         })
     } catch(e) {
-        res.render('500')
+        throw e
     }
 })
 

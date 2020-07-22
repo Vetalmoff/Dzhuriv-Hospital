@@ -7,14 +7,21 @@ const Consumption = require('../models/out')
 const Employee = require('../models/employee')
 const Patient = require('../models/patient')
 const User = require('../models/user')
-const { sum } = require('../models/out')
 const dateToView = require('../middleware/dateToView')
+const authModerator = require('../middleware/authModerator')
 
-router.get('/', async (req, res) => {
+
+router.get('/', authModerator, async (req, res) => {
     try {
-        const medicines = await Medicine.findAll({})
-        const employees = await Employee.findAll({})
-        const patients = await Patient.findAll({})
+        const medicines = await Medicine.findAll({
+            order: ['title']
+        })
+        const employees = await Employee.findAll({
+            order: ['name']
+        })
+        const patients = await Patient.findAll({
+            order: ['name']
+        })
 
         res.render('outReportForm', {
             title: 'Звіт по розходу',
@@ -28,7 +35,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', authModerator, async (req, res) => {
     try {   
 
         const arrBodyMedicine = req.body.medicine.split('  ')

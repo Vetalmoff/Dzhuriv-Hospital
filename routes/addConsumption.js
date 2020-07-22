@@ -10,10 +10,15 @@ router.get('/', async (req, res) => {
         const allMedicines = await Medicine.findAll({
             where: {
                 isActive: true
-            }
+            },
+            order: ['title']
         })
-        const allEmployees = await Employee.findAll()
-        const allPatients = await Patient.findAll()
+        const allEmployees = await Employee.findAll({
+            order: ['name']
+        })
+        const allPatients = await Patient.findAll({
+            order: ['name']
+        })
         console.log(allMedicines)
         res.render('addConsumption', {
             title: 'Розхід',
@@ -23,7 +28,7 @@ router.get('/', async (req, res) => {
             allPatients
         })
     } catch(e) {
-        res.render('500')
+        throw e    
     }
 })
 

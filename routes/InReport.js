@@ -9,12 +9,15 @@ const Employee = require('../models/employee')
 const Patient = require('../models/patient')
 const sequelize = require('../utils/db')
 const dateToView = require('../middleware/dateToView')
+const authModerator = require('../middleware/authModerator')
 
 
 
-router.get('/', async (req, res) => {
+router.get('/', authModerator, async (req, res) => {
     try {
-        const allMedicines = await Medicine.findAll()
+        const allMedicines = await Medicine.findAll({
+            order: ['title']
+        })
         console.log('allMedicines.length = ', allMedicines.length)
         res.render('InReportForm', {
             title: 'Звіт по приходу',
@@ -26,7 +29,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async(req, res) => {
+router.post('/', authModerator, async(req, res) => {
     try {   
         const arrBody = req.body.id.split('  ')
         

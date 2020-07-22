@@ -11,7 +11,8 @@ router.get('/', async (req, res) => {
                 role: {
                     [Op.not]: 'superAdmin'
                 }
-            }
+            },
+            order: ['name']
         })
         console.log('allUsers ====== ', users)
 

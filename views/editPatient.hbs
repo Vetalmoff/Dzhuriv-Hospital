@@ -4,16 +4,19 @@
 <div class="form">
     <form method="POST" action="/patients/edit">
         <div class="form-group">
-            <label class="col-sm-2" for="name">Ім'я</label>
+            <label class="col-sm-3" for="name">Ім'я</label>
             <input type="text" name="name" id="name" value="{{item.name}}" required>
         </div>
         <div class="form-group">
-            <label class="col-sm-2" for="age">Вік</label>
-            <input type="number" name="age" id="age" value="{{item.age}}">
+            <label class="control-label col-sm-3" for="dateOfBirdth">Дата народження:</label>
+                <input type="date" id="dateOfBirdth" name="dateOfBirdth" required
+                    value="{{item.onlyDate}}"
+                    min="1900-01-01" max="2030-12-31">
+                <br>
         </div>
         <div class="form-group">
-            <label class="col-sm-2" for="desc">Опис</label>
-            <input type="text" name="desc" id="desc" value="{{item.description}}">
+            <label class="control-label col-sm-3" for="desc">Опис</label>
+            <textarea rows="5" cols="40" name="desc" id="desc">{{item.description}}</textarea>
         </div>
         <input type="hidden" value="{{item.id}}" name="id">
         <input type="hidden" name="_csrf" value="{{csrf}}">
