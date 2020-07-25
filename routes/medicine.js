@@ -59,7 +59,8 @@ router.get('/', authModerator, pagination(Medicine),  async (req, res) => {
                     isActive: req.query.isActive,
                     paginationMedicine,
                     title: 'Списані ліки',
-                    isCatalog: true
+                    isCatalog: true,
+                    success: req.flash('success')
                 })
             } else {
 
@@ -71,7 +72,8 @@ router.get('/', authModerator, pagination(Medicine),  async (req, res) => {
                     paginationMedicine,
                     isActive: req.query.isActive,
                     title: 'Ліки',
-                    isCatalog: true
+                    isCatalog: true,
+                    success: req.flash('success')
                 })
             }
             

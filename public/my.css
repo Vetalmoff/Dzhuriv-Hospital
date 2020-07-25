@@ -11,8 +11,35 @@ body {
     max-width: 500px;
 }
 
+.form-group a{
+  color: rgb(55, 189, 160);
+}
+
 small.active {
   color: red;
+}
+
+.material-icons { transition: all .2s ease-in-out; }
+.material-icons:hover { transform: scale(1.4); }
+
+.alertt {
+  margin: 1rem;
+  background-color: rgba(255, 41, 41, 0.8);
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+}
+.pagin {
+  display: flex;
+  justify-content: right;
+}
+
+.success {
+  margin: 1rem;
+  background-color:#17a2b8;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
 }
 
 

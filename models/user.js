@@ -29,7 +29,10 @@ const user = sequelize.define('User', {
     role: {
         type: DataTypes.ENUM('user', 'moderator', 'admin', 'superAdmin'),
         defaultValue: 'user'
-    }
+    },
+    resetToken: DataTypes.STRING,
+    resetTokenExp: DataTypes.DATE
+
 
 })
 

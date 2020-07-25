@@ -7,6 +7,9 @@ const Consumption = require('../models/out')
 const Employee = require('../models/employee')
 const Patient = require('../models/patient')
 const User = require('../models/user')
+const sgMail = require('@sendgrid/mail')
+const keys = require('../keys/keys')
+const reportEmail = require('../emails/report')
 const dateToView = require('../middleware/dateToView')
 const authModerator = require('../middleware/authModerator')
 
@@ -95,7 +98,7 @@ router.post('/', authModerator, async (req, res) => {
                     [Op.in]: arrBodyPatient
                 }
             },
-            order: [['quantity', 'DESC']],
+            //order: [['quantity', 'DESC']],
             include: [{
                 model: Medicine,
                 required: true,
@@ -106,7 +109,10 @@ router.post('/', authModerator, async (req, res) => {
                 required: true,
                 attributes: ['email', 'name']
             }]
+            
         })
+
+        console.log('consumptions ==== ', consumptions)
 
 
         //  Select ALL records of Consumptions TABLE
@@ -165,15 +171,13 @@ router.post('/', authModerator, async (req, res) => {
                 attributes: ['email', 'name']
             }]
         })) ) 
-        console.log('PromisAll = ', singleConsumptions)
 
         //  Find all MedicineId
         const allMedicineId = extendedConsumptions.map(item => item.MedicineId)
-        console.log(allMedicineId)
 
         //  Keep only uniq MedicineId
         const uniqueMedicineId = [...new Set(allMedicineId)] 
-        console.log(uniqueMedicineId)
+        
 
         const arrayOfArraysConsumptions = []
         
@@ -183,7 +187,6 @@ router.post('/', authModerator, async (req, res) => {
 
         //  Count all remainders group by MedicineId
         const allRemainders = arrayOfArraysConsumptions.map(item => item.reduce((sum, current) => sum + current.quantity, 0))
-        console.log(allRemainders)
 
 
         //  Alter array of arrays to => array of objects with new keys : name, sum
@@ -193,18 +196,20 @@ router.post('/', authModerator, async (req, res) => {
             sum: allRemainders[index],
             isActive: item[0].Medicine.isActive
         }))
+        newArrOfConsumptions.sort((a, b) => b.sum - a.sum)
         console.log(newArrOfConsumptions)
 
 
         //  Change a format Date to view '01.01.01'
         newArrOfConsumptions.forEach(elem => elem.item.forEach(item => item.newDate = dateToView(item.createdAt)))
 
-
+        req.session.consumptions = newArrOfConsumptions
+        req.session.from = req.body.from
+        req.session.to = req.body.to
        
 
 
         res.render('outReport', {
-            consumptions,
             newArrOfConsumptions,
             allRemainders,
             from: req.body.from,
@@ -219,6 +224,65 @@ router.post('/', authModerator, async (req, res) => {
     } catch(e) {
         throw e
     }
+})
+
+router.get('/sendConsumptions', async (req, res) => {
+    try {
+
+        const users = await User.findAll({
+            where: {
+                role: {
+                    [Op.or]: ['moderator', 'admin']
+                  }
+            }
+        })
+        console.log(users)
+
+        res.render('sendReport', {
+            users
+        })
+
+    } catch (e) {
+        throw e
+    }
+})
+
+router.post('/sendReport', async (req, res) => {
+        const {email} = req.body
+        console.log(email)
+        const consumptions = req.session.consumptions
+        console.log(consumptions)
+
+        let html = `
+        <h1>Звіт по розходу за період : ${req.session.from} по : ${req.session.to}</h1>
+        <p></p>
+        <table class="table">
+    <thead class="thead-dark">
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">Назва</th>
+        <th scope="col">Кількість</th>
+        </tr>
+    </thead>
+    <tbody>`
+
+        html += consumptions.reduce((sum ,item, index) => sum + `
+            <tr>
+            <th scope="row">${++index}</th>
+            <td>${item.name}</td>
+            <td>${item.sum}</td>
+            </tr>
+        `, `
+        `)
+
+        html += `</tbody>
+    </table>`
+
+        console.log(html)
+        await sgMail.send(reportEmail(email, html))
+
+        req.flash('success', `Звіт надіслано на пошту : ${email}`)
+        res.redirect('/medicine?page=1&limit=3&isActive=1&order=title&upOrDown=ASC')
 })
 
 

@@ -1,0 +1,18 @@
+    <h1>Забули пароль?</h1>
+    
+<div class="form">
+
+    {{#if error}}
+        <p class="alert">{{error}}</p>
+    {{/if}}
+
+    <form method="POST" action="/auth/reset">
+        <div class="form-group">
+            <label for="emailLogin">Введіть свій Email</label>
+            <input type="email" class="form-control" id="emailLogin" name="email" aria-describedby="emailHelpForLogin" required>
+            <small id="emailHelpForLogin" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <input type="hidden" name="_csrf" value="{{csrf}}">
+        <button type="submit" class="btn btn-info">Відновити пароль</button>
+    </form>
+</div>

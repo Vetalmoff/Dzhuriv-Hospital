@@ -1,0 +1,20 @@
+<h1>Виберіть користувача, якому треба надіслати листа</h1>
+
+<form method="POST" action="/outReport/sendReport">
+            <div class="form-group">
+                <label for="email">Користувачі</label>
+                <select name="email" class="form-control" id="email" required>
+
+                    {{#each users}}
+                            <option value="{{email}}">Ім'я : {{name}} email : {{email}}</option>
+                    {{/each}}
+
+                </select>
+            </div>
+            
+            <input type="hidden" name="_csrf" value="{{csrf}}">
+            
+            <div>
+                <button type="submit" class="btn btn-info mb-2">Надіслати</button>
+            </div>
+        </form>

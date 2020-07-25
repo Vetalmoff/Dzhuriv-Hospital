@@ -9,6 +9,12 @@
 
   <div class="tab-content form" id="myTabContent">
     <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="home-tab">
+      {{#if loginError}}
+        <p class="alertt">{{loginError}}</p>
+      {{/if}}
+      {{#if success}}
+        <p class="success">{{success}}</p>
+      {{/if}}
       <form method="POST" action="/auth/login">
         <div class="form-group">
           <label for="emailLogin">Введіть свій Email</label>
@@ -19,12 +25,18 @@
           <label for="passwordLogin">Введіть пароль</label>
           <input type="password" class="form-control" id="passwordLogin" name="password" required>
         </div>
+        <div class="form-group">
+          <p><a href="/auth/reset">Забули пароль?</a></p>
+        </div>
         <input type="hidden" name="_csrf" value="{{csrf}}">
         <button type="submit" class="btn btn-info">Увійти</button>
       </form>
     </div>
 
     <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="profile-tab">
+      {{#if registerError}}
+        <p class="alertt">{{registerError}}</p>
+      {{/if}}
       <form method="POST" action="/auth/register">
         <div class="form-group">
           <label for="nameRegister">Введіть своє ім'я</label>
@@ -46,7 +58,7 @@
           <small id="confirmHelpRegister" class="form-text text-muted"></small>
         </div>
         <input type="hidden" name="_csrf" value="{{csrf}}">
-        <button type="submit" class="btn btn-info" id="submitButton">Зареєструваится</button>
+        <button type="submit" class="btn btn-info" id="submitButton">Зареєструватися</button>
       </form>
     </div>
   </div>

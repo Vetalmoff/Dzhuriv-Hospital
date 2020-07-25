@@ -2,13 +2,27 @@ const{Router} = require('express')
 const { sync } = require('../utils/db')
 const router = Router()
 const bcrypt = require('bcryptjs')
+const crypto = require('crypto')
 const User = require('../models/user')
+const keys = require('../keys/keys')
+const sgMail = require('@sendgrid/mail')
+const regEmail = require('../emails/registr')
+const resetEmail = require('../emails/reset')
+const { Op } = require('sequelize')
+sgMail.setApiKey(keys.sendGrid)
+
+//console.log(keys.sendGrid)
+
+
 
 router.get('/login', async (req, res) => {
     try {
         res.render('auth/login', {
             title: 'Логин',
-            isLogin: true
+            isLogin: true,
+            loginError: req.flash('loginError'),
+            registerError: req.flash('registerError'),
+            success: req.flash('success')
         })
     } catch(e) {
         console.log(e)
@@ -62,9 +76,11 @@ router.post('/login', async (req, res) => {
                     res.redirect('/')
                 })
             } else {
+                req.flash('loginError', 'Користувача з такою поштою не існує')
                 res.redirect('/auth/login#login')
             }
         } else {
+            req.flash('loginError', 'Користувача з такою поштою не існує')
             res.redirect('/auth/login#login')
         }
         
@@ -82,6 +98,7 @@ router.post('/register', async (req, res) => {
         }})
 
         if (candidate) {
+            req.flash('registerError', 'Користувач з такою поштою вже існує')
             res.redirect('/auth/login#register')
         } else {
             const hashPassword = await bcrypt.hash(password, 10)
@@ -91,7 +108,12 @@ router.post('/register', async (req, res) => {
                 password: hashPassword
             })
 
+            await sgMail.send(regEmail(email))
+            
+            req.flash('success', 'Ви успішно зареєструвалися')
             res.redirect('/auth/login#login')
+
+            
         }
 
     } catch(e) {
@@ -99,5 +121,113 @@ router.post('/register', async (req, res) => {
     }
 })
 
+router.get('/reset', (req, res) => {
+    try {
+        res.render('auth/reset', {
+            title: 'Відновлення пароля',
+            isLogin: true,
+            error: req.flash('error')
+        })
+    } catch(e) {
+        throw e
+    }
+})
+
+router.post('/reset', (req, res) => {
+    try {
+        const {email} = req.body
+        crypto.randomBytes(32, async (err, buffer) => {
+            if (err) {
+                req.flash('error', 'Спробуйте ше раз')
+                return res.redirect('/auth/reset')
+            }
+            const token = buffer.toString('hex')
+            const candidate = await User.findOne({
+                where: {
+                    email
+                }
+            })
+            if (candidate) {
+                candidate.resetToken = token
+                candidate.resetTokenExp = Date.now() + 3600 * 1000
+                await candidate.save()
+                await sgMail.send(resetEmail(candidate.email, token))
+                req.flash('success', 'Вам надіслано листа на електронну пошту')
+                res.redirect('/auth/login')
+            } else {
+                req.flash('error', 'Не має користувача з такою поштою')
+                return res.redirect('/auth/reset')
+            }
+        })
+
+    } catch (e) {
+        throw e
+    }
+    
+})
+
+router.get('/password/:token', async (req, res) => {
+    if (!req.params.token) {
+        req.flash('loginError', 'Спробуйте ще раз')
+        return res.redirect('/auth/login')
+    }
+
+    try {
+        const user = await User.findOne({
+            where: {
+                resetToken: req.params.token,
+                resetTokenExp: {
+                    [Op.gt]: Date.now()
+                }
+            }
+        })
+
+        if (!user) {
+            req.flash('loginError', 'Спробуйте ще раз')
+            res.redirect('auth/login')
+        } else {
+            res.render('auth/password', {
+                title: 'Відновлення пароля',
+                isLogin: true,
+                error: req.flash('error'),
+                userId: user.id,
+                token: req.params.token
+            })
+        }
+        
+    } catch (e) {
+        throw e
+    }
+    
+})
+
+router.post('/password', async (req, res) => {
+    try {
+        const { password, userId, token } = req.body
+        const user = await User.findOne({
+            where: {
+                id: userId,
+                resetToken: token,
+                resetTokenExp: {
+                    [Op.gt]: Date.now()
+                }
+            }
+        })
+
+        if (user) {
+            user.password = await bcrypt.hash(password, 10)
+            user.resetToken = null
+            user.resetTokenExp = null
+            await user.save()
+            req.flash('success', 'Пароль успішно змінено!')
+            res.redirect('/auth/login')
+        } else {
+            req.flash('loginError', 'Час життя токена вийшов, спробуйте ще раз')
+            res.redirect('/auth/login')
+        }
+    } catch (e) {
+        throw e
+    }
+})
 
 module.exports = router

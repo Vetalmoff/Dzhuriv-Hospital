@@ -4,6 +4,7 @@ const { DB, user, password, host, port } = require('./keys/keys')
 const exphbs = require('express-handlebars')
 const Handlebars = require('handlebars')
 const path = require('path')
+const flash = require('connect-flash')
 const session = require('express-session')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 const sequelize = require('./utils/db')
@@ -63,6 +64,7 @@ app.use(session({
   saveUninitialized: false
 }))
 app.use(csurf())
+app.use(flash())
 app.use(varMiddleware)
 
 
