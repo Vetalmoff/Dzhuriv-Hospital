@@ -12,6 +12,8 @@ const keys = require('../keys/keys')
 const reportEmail = require('../emails/report')
 const dateToView = require('../middleware/dateToView')
 const authModerator = require('../middleware/authModerator')
+const partial = require('../emails/partial')
+const { send } = require('@sendgrid/mail')
 
 
 router.get('/', authModerator, async (req, res) => {
@@ -253,33 +255,29 @@ router.post('/sendReport', async (req, res) => {
         const consumptions = req.session.consumptions
         console.log(consumptions)
 
-        let html = `
+        const header = `
         <h1>Звіт по розходу за період : ${req.session.from} по : ${req.session.to}</h1>
         <p></p>
-        <table class="table">
-    <thead class="thead-dark">
-        <tr>
-        <th scope="col">#</th>
-        <th scope="col">Назва</th>
-        <th scope="col">Кількість</th>
-        </tr>
-    </thead>
-    <tbody>`
+        `
 
-        html += consumptions.reduce((sum ,item, index) => sum + `
+        const html = consumptions.reduce((sum ,elem, index) => sum + `
             <tr>
-            <th scope="row">${++index}</th>
-            <td>${item.name}</td>
-            <td>${item.sum}</td>
+                <th width="50" valign="top">
+                    ${++index}
+                </th>
+                <td style="font-size: 1rem; line-height: 0; text-align: center;" width="450">
+                    ${elem.name}
+                </td>
+                <td style="text-align: center;" width="100" valign="top">
+                    ${elem.sum}
+                </td>
             </tr>
-        `, `
-        `)
+        `, ``)
 
-        html += `</tbody>
-    </table>`
 
         console.log(html)
-        await sgMail.send(reportEmail(email, html))
+        //await sgMail.send(reportEmail(email, html))
+        await sgMail.send(partial(email, html, header))
 
         req.flash('success', `Звіт надіслано на пошту : ${email}`)
         res.redirect('/medicine?page=1&limit=3&isActive=1&order=title&upOrDown=ASC')

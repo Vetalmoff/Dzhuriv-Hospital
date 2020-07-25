@@ -29,6 +29,9 @@ small.active {
   color: white;
   text-align: center;
 }
+.black {
+  color: #a6edff;
+}
 .pagin {
   display: flex;
   justify-content: right;

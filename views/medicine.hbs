@@ -6,6 +6,12 @@
 {{/if}}
 
 
+
+
+
+
+{{#if paginationMedicine.results.length}}
+
 <a href="/medicine?page=1&limit=3&isActive={{isActive}}&order={{order}}&upOrDown={{upOrDown}}"><span class="material-icons text-dark">
 view_stream
 </span></a>
@@ -22,15 +28,10 @@ view_comfy
 text_rotate_vertical
 </span></a>
 
-{{#if isActive}}
-    <a href="/medicine?page=1&limit={{limit}}&isActive={{isActive}}&order=remainder&upOrDown=DESC"><span class="material-icons text-dark">
-    format_list_numbered
-    </span></a>
-{{/if}}
+<a href="/medicine?page=1&limit={{limit}}&isActive={{isActive}}&order=remainder&upOrDown=DESC"><span class="material-icons text-dark">
+format_list_numbered
+</span></a>
 
-
-
-{{#if paginationMedicine.results.length}}
     <table class="table">
         <thead class="thead-dark">
             <tr>
