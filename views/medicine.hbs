@@ -14,26 +14,73 @@
 
 {{#if paginationMedicine.results.length}}
 
-<a data-toggle="tooltip" data-placement="top" title="По десять" href="/medicine?page=1&limit=3&isActive={{isActive}}&order={{order}}&upOrDown={{upOrDown}}"><span class="material-icons text-dark">
-view_stream
-</span></a>
+<div class="iconsAndPagin">
 
-<a data-toggle="tooltip" data-placement="top" title="По двадцять" href="/medicine?page=1&limit=5&isActive={{isActive}}&order={{order}}&upOrDown={{upOrDown}}"><span class="material-icons text-dark">
-view_module
-</span></a>
+    <div class="myIcons">
+        <a data-toggle="tooltip" data-placement="top" title="По десять" href="/medicine?page=1&limit=10&isActive={{isActive}}&order={{order}}&upOrDown={{upOrDown}}"><span class="material-icons text-dark">
+        view_stream
+        </span></a>
 
-<a data-toggle="tooltip" data-placement="top" title="По тридцять" href="/medicine?page=1&limit=10&isActive={{isActive}}&order={{order}}&upOrDown={{upOrDown}}"><span class="material-icons text-dark">
-view_comfy
-</span></a>
+        <a data-toggle="tooltip" data-placement="top" title="По двадцять" href="/medicine?page=1&limit=20&isActive={{isActive}}&order={{order}}&upOrDown={{upOrDown}}"><span class="material-icons text-dark">
+        view_module
+        </span></a>
 
-<a data-toggle="tooltip" data-placement="top" title="За алфавітом" href="/medicine?page=1&limit={{limit}}&isActive={{isActive}}&order=title&upOrDown=ASC"><span class="material-icons text-dark">
-text_rotate_vertical
-</span></a>
+        <a data-toggle="tooltip" data-placement="top" title="По тридцять" href="/medicine?page=1&limit=30&isActive={{isActive}}&order={{order}}&upOrDown={{upOrDown}}"><span class="material-icons text-dark">
+        view_comfy
+        </span></a>
 
-<a data-toggle="tooltip" data-placement="top" title="По залишкам" href="/medicine?page=1&limit={{limit}}&isActive={{isActive}}&order=remainder&upOrDown=DESC"><span class="material-icons text-dark">
-format_list_numbered
-</span></a>
+        <a data-toggle="tooltip" data-placement="top" title="За алфавітом" href="/medicine?page=1&limit={{limit}}&isActive={{isActive}}&order=title&upOrDown=ASC"><span class="material-icons text-dark">
+        text_rotate_vertical
+        </span></a>
 
+        <a data-toggle="tooltip" data-placement="top" title="По залишкам" href="/medicine?page=1&limit={{limit}}&isActive={{isActive}}&order=remainder&upOrDown=DESC"><span class="material-icons text-dark">
+        format_list_numbered
+        </span></a>
+    </div>
+    
+
+    <div class="pagin">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link text-dark" href="medicine?page={{paginationMedicine.firstPage.page}}&limit={{paginationMedicine.firstPage.limit}}&isActive={{paginationMedicine.firstPage.isActive}}&order={{order}}&upOrDown={{upOrDown}}">Перша сторінка</a></li>
+                
+                {{#if paginationMedicine.previous}}
+                    <li class="page-item">
+                        <a class="page-link text-dark" href="medicine?page={{paginationMedicine.previous.page}}&limit={{paginationMedicine.previous.limit}}&isActive={{paginationMedicine.previous.isActive}}&order={{order}}&upOrDown={{upOrDown}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {{else}}
+                    <li class="page-item disabled">
+                        <a class="page-link text-dark" href="medicine?page={{paginationMedicine.previous.page}}&limit={{paginationMedicine.previous.limit}}&isActive={{paginationMedicine.previous.isActive}}&order={{order}}&upOrDown={{upOrDown}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {{/if}}
+
+                <li class="page-item"><a class="page-link text-dark" href="#">{{paginationMedicine.page}}</a></li>
+
+                {{#if paginationMedicine.next}}
+                    <li class="page-item">
+                        <a class="page-link text-dark" href="medicine?page={{paginationMedicine.next.page}}&limit={{paginationMedicine.next.limit}}&isActive={{paginationMedicine.next.isActive}}&order={{order}}&upOrDown={{upOrDown}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {{else}}
+                    <li class="page-item disabled">
+                        <a class="page-link text-dark" href="medicine?page={{paginationMedicine.next.page}}&limit={{paginationMedicine.next.limit}}&isActive={{paginationMedicine.next.isActive}}&order={{order}}&upOrDown={{upOrDown}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {{/if}}
+
+                <li class="page-item"><a class="page-link text-dark" href="medicine?page={{paginationMedicine.lastPage.page}}&limit={{paginationMedicine.lastPage.limit}}&isActive={{paginationMedicine.lastPage.isActive}}&order={{order}}&upOrDown={{upOrDown}}">Остання сторінка : {{paginationMedicine.lastPage.page}}</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div class="table-content">
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -77,46 +124,8 @@ format_list_numbered
             </tbody>
         {{/each}}
     </table>
+</div>
 
-    <div class="pagin">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link text-dark" href="medicine?page={{paginationMedicine.firstPage.page}}&limit={{paginationMedicine.firstPage.limit}}&isActive={{paginationMedicine.firstPage.isActive}}&order={{order}}&upOrDown={{upOrDown}}">Перша сторінка</a></li>
-                
-                {{#if paginationMedicine.previous}}
-                    <li class="page-item">
-                        <a class="page-link text-dark" href="medicine?page={{paginationMedicine.previous.page}}&limit={{paginationMedicine.previous.limit}}&isActive={{paginationMedicine.previous.isActive}}&order={{order}}&upOrDown={{upOrDown}}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                {{else}}
-                    <li class="page-item disabled">
-                        <a class="page-link text-dark" href="medicine?page={{paginationMedicine.previous.page}}&limit={{paginationMedicine.previous.limit}}&isActive={{paginationMedicine.previous.isActive}}&order={{order}}&upOrDown={{upOrDown}}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                {{/if}}
-
-                <li class="page-item"><a class="page-link text-dark" href="#">{{paginationMedicine.page}}</a></li>
-
-                {{#if paginationMedicine.next}}
-                    <li class="page-item">
-                        <a class="page-link text-dark" href="medicine?page={{paginationMedicine.next.page}}&limit={{paginationMedicine.next.limit}}&isActive={{paginationMedicine.next.isActive}}&order={{order}}&upOrDown={{upOrDown}}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                {{else}}
-                    <li class="page-item disabled">
-                        <a class="page-link text-dark" href="medicine?page={{paginationMedicine.next.page}}&limit={{paginationMedicine.next.limit}}&isActive={{paginationMedicine.next.isActive}}&order={{order}}&upOrDown={{upOrDown}}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                {{/if}}
-
-                <li class="page-item"><a class="page-link text-dark" href="medicine?page={{paginationMedicine.lastPage.page}}&limit={{paginationMedicine.lastPage.limit}}&isActive={{paginationMedicine.lastPage.isActive}}&order={{order}}&upOrDown={{upOrDown}}">Остання сторінка : {{paginationMedicine.lastPage.page}}</a></li>
-            </ul>
-        </nav>
-    </div>
 {{else}}
     <h1>Нічого не має</h1>
 {{/if}}

@@ -81,7 +81,7 @@ const $confirmHelpRegister = document.querySelector('#confirmHelpRegister')
 const $submitButton = document.querySelector('#submitButton')
 
 if ( ($confirm)) {
-    $confirm.addEventListener('input', (event) => {
+    $confirm.addEventListener('blur', (event) => {
         if ($confirm.value !== $password.value) {
             $confirmHelpRegister.innerHTML = 'Паролі не співпадають!'
             $confirmHelpRegister.classList.add('active')
@@ -93,6 +93,13 @@ if ( ($confirm)) {
             $confirmHelpRegister.classList.add('text-muted')
             $submitButton.disabled=false
         }
+    })
+
+    $confirm.addEventListener('focus', () => {
+        $confirmHelpRegister.innerHTML = ''
+        $confirmHelpRegister.classList.remove('active')
+        $confirmHelpRegister.classList.add('text-muted')
+        $submitButton.disabled=false
     })
 }
   

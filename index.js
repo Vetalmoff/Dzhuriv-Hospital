@@ -1,9 +1,11 @@
 const express = require('express')
 const app = express()
-const { DB, user, password, host, port } = require('./keys/keys')
+const { DB, user, password, host, port } = require('./keys/keys.dev')
 const exphbs = require('express-handlebars')
 const Handlebars = require('handlebars')
 const path = require('path')
+const helmet = require('helmet')
+const compression = require('compression')
 const flash = require('connect-flash')
 const session = require('express-session')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
@@ -79,6 +81,8 @@ app.use(session({
 }))
 app.use(csurf())
 app.use(flash())
+app.use(helmet())
+app.use(compression())
 app.use(varMiddleware)
 
 

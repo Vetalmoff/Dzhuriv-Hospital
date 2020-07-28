@@ -8,7 +8,7 @@ const Employee = require('../models/employee')
 const Patient = require('../models/patient')
 const User = require('../models/user')
 const sgMail = require('@sendgrid/mail')
-const keys = require('../keys/keys')
+const keys = require('../keys/keys.dev')
 const reportEmail = require('../emails/report')
 const dateToView = require('../middleware/dateToView')
 const authModerator = require('../middleware/authModerator')
@@ -279,7 +279,7 @@ router.post('/sendReport', async (req, res) => {
         await sgMail.send(partial(email, html, header))
 
         req.flash('success', `Звіт надіслано на пошту : ${email}`)
-        res.redirect('/medicine?page=1&limit=3&isActive=1&order=title&upOrDown=ASC')
+        res.redirect('/medicine?page=1&limit=10&isActive=1&order=title&upOrDown=ASC')
 })
 
 

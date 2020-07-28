@@ -30,8 +30,8 @@ router.post('/', medicineValidators, async (req, res) => {
             UserId: req.session.user.id
         })
        
-        req.flash('success', `Ліки ${newPreparat.title} успішно створено`)
-        res.redirect(`/medicine?page=1&limit=3&isActive=1&order=title&upOrDown=ASC`)
+        req.flash('success', `Ліки ${newPreparat.title} успішно додано`)
+        res.redirect(`/medicine?page=1&limit=10&isActive=1&order=title&upOrDown=ASC`)
     } catch(e) {
         throw e        
     }
