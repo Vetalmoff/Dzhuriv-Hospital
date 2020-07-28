@@ -31,8 +31,11 @@ const user = sequelize.define('User', {
         defaultValue: 'user'
     },
     resetToken: DataTypes.STRING,
-    resetTokenExp: DataTypes.DATE
-
+    resetTokenExp: DataTypes.DATE,
+    subscription: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    }
 
 })
 

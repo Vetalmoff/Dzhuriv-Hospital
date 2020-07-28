@@ -23,16 +23,20 @@ router.post('/', userValidators, async (req, res) => {
             return res.status(422).redirect('/profile')
         }
 
-        const {name, id} = req.body
-        console.log(name, id)
-        await User.update({name}, {
+        const {name, id, subscription} = req.body
+        console.log(name, id, subscription)
+        let check = false
+        if (subscription === 'on') {
+            check = true
+        } 
+        await User.update({name, subscription: check}, {
             where: {
                 id
             }
         })
         const newUser = await User.findByPk(id)
         req.session.user = newUser
-        req.flash('success', "Ім'я змінено")
+        req.flash('success', "Зміни збережено")
         res.redirect('/profile')
     } catch (e) {
         throw e

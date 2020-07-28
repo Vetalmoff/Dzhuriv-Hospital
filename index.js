@@ -23,6 +23,7 @@ const InRerportRouter = require('./routes/InReport')
 const outReportRouter = require('./routes/OutReport')
 const usersRouter = require('./routes/users')
 const profileRouter = require('./routes/profile')
+const subscription = require('./middleware/subscription')
 const errorHandler404 = require('./middleware/errorHandler404')
 const authRouter = require('./routes/auth')
 const varMiddleware = require('./middleware/variables')
@@ -33,16 +34,9 @@ const csurf = require('csurf')
 const cron = require('node-cron')
 
 
-// cron.schedule('* * * * *', function () {
-//   let date = new Date()
-//   console.log(date)
-//   console.log('year = ',date.getFullYear())
-//   console.log('month = ',date.getMonth())
-//   console.log('date = ',date.getDate())
-//   console.log('day of week = ',date.getDay())
-//   console.log('hours = ', date.getHours())
-//   console.log('minutes = ',date.getMinutes())
-// })
+ cron.schedule('00 8 * * 1', function () {
+    subscription()
+ })
 
 
 
