@@ -1,5 +1,6 @@
 const{Router} = require('express')
 const { sync } = require('../utils/db')
+const {validationResult} = require('express-validator')
 const router = Router()
 const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
@@ -9,9 +10,9 @@ const sgMail = require('@sendgrid/mail')
 const regEmail = require('../emails/registr')
 const resetEmail = require('../emails/reset')
 const { Op } = require('sequelize')
+const {registerValidators, loginValidators} = require('../middleware/validators')
 sgMail.setApiKey(keys.sendGrid)
 
-//console.log(keys.sendGrid)
 
 
 
@@ -90,31 +91,27 @@ router.post('/login', async (req, res) => {
     }
 })
 
-router.post('/register', async (req, res) => {
+router.post('/register', registerValidators, async (req, res) => {
     try {
         const {name, email, password} = req.body
-        const candidate = await User.findOne({where: {
-            email
-        }})
 
-        if (candidate) {
-            req.flash('registerError', 'Користувач з такою поштою вже існує')
-            res.redirect('/auth/login#register')
-        } else {
-            const hashPassword = await bcrypt.hash(password, 10)
-            const user = await User.create({
-                name,
-                email,
-                password: hashPassword
-            })
-
-            await sgMail.send(regEmail(email))
-            
-            req.flash('success', 'Ви успішно зареєструвалися')
-            res.redirect('/auth/login#login')
-
-            
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            req.flash('registerError', errors.array()[0].msg)
+            return res.status(422).redirect('/auth/login#register')
         }
+
+        const hashPassword = await bcrypt.hash(password, 10)
+        const user = await User.create({
+            name,
+            email,
+            password: hashPassword
+        })
+
+        await sgMail.send(regEmail(email))
+        
+        req.flash('success', 'Ви успішно зареєструвалися')
+        res.redirect('/auth/login#login')
 
     } catch(e) {
         console.log(e)

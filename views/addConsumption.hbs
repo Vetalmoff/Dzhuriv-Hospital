@@ -1,5 +1,9 @@
 <h1>Розхід</h1>
 
+{{#if msg}}
+    <div class="alert alert-danger" role="alert">{{msg}}</div>
+{{/if}}
+
 <div class="form">
     {{#if allMedicines.length}}
         <form method="POST" action="/addConsumption">

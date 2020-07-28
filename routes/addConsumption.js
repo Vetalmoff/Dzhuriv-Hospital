@@ -4,6 +4,8 @@ const Consumption = require('../models/out')
 const Medicine = require('../models/medicine')
 const Employee = require('../models/employee')
 const Patient = require('../models/patient')
+const { consumptionValidators } = require('../middleware/validators')
+const { validationResult } = require('express-validator')
 
 router.get('/', async (req, res) => {
     try {
@@ -25,15 +27,22 @@ router.get('/', async (req, res) => {
             isConsumption: true,
             allMedicines,
             allEmployees,
-            allPatients
+            allPatients,
+            msg: req.flash('errorConsumption')
         })
     } catch(e) {
         throw e    
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', consumptionValidators, async (req, res) => {
     try {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            req.flash('errorConsumption', errors.array()[0].msg)
+            return res.status(422).redirect('/addConsumption')
+        }
+
         const allMedicines = await Medicine.findAll()
         const allEmployees = await Employee.findAll()
         const allPatients = await Patient.findAll()

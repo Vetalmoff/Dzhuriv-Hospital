@@ -1,5 +1,9 @@
 <h1>Користувачі</h1>
 
+{{#if msg}}
+    <div class="alert alert-success">{{msg}}</div>
+{{/if}}
+
 {{#if users.length}}
     <table class="table">
         <thead class="thead-dark">

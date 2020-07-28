@@ -14,10 +14,11 @@ router.get('/', async (req, res) => {
             },
             order: ['name']
         })
-        console.log('allUsers ====== ', users)
+        //console.log('allUsers ====== ', users)
 
         res.render('users', {
-            users
+            users,
+            msg: req.flash('success')
         })
     } catch (e) {
         throw e
@@ -35,6 +36,9 @@ router.post('/:id', async (req, res) => {
             }
         })
 
+        const user = await User.findByPk(req.params.id)
+        console.log('updateUser = ', user)
+        req.flash('success', `Для користувача -   ${user.email}   встановлено доступ -   ${user.role}`)
         res.redirect('/users')
 
     } catch(e) {

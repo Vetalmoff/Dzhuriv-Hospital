@@ -1,5 +1,12 @@
 <h1>Пацієнти</h1>
 
+{{#if success}}
+    <p class="alert alert-success">{{success}}</p>
+{{/if}}
+
+{{#if error}}
+    <p class="alert alert-danger">{{error}}</p>
+{{/if}}
 
 {{#if patients.length}}
     <table class="table">

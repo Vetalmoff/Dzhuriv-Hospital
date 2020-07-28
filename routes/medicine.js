@@ -11,6 +11,8 @@ const authModerator = require('../middleware/authModerator')
 const authAdmin = require('../middleware/authAdmin')
 const authSuperAdmin = require('../middleware/authSuperAdmin')
 const pagination = require('../middleware/pagination')
+const { medicineValidators } = require('../middleware/validators')
+const {validationResult} = require('express-validator')
 
 
 
@@ -60,7 +62,8 @@ router.get('/', authModerator, pagination(Medicine),  async (req, res) => {
                     paginationMedicine,
                     title: 'Списані ліки',
                     isCatalog: true,
-                    success: req.flash('success')
+                    success: req.flash('success'),
+                    error: req.flash('error')
                 })
             } else {
 
@@ -73,7 +76,8 @@ router.get('/', authModerator, pagination(Medicine),  async (req, res) => {
                     isActive: req.query.isActive,
                     title: 'Ліки',
                     isCatalog: true,
-                    success: req.flash('success')
+                    success: req.flash('success'),
+                    error: req.flash('error')
                 })
             }
             
@@ -97,20 +101,38 @@ router.get('/:id/edit', authAdmin, async (req, res) => {
     }
 })
 
-router.post('/edit', authAdmin, async (req, res) => {
+router.post('/edit', authAdmin, medicineValidators, async (req, res) => {
     try {
+
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            req.flash('medicineError', errors.array()[0].msg)
+            return res.status(422).redirect('/addMedicine')
+        }
+
         const {id, title, desc} = req.body
-        const anyIncoming = await Incoming.findByPk(id) 
-        const anyConsumption = await Consumption.findByPk(id) 
+        const anyIncoming = await Incoming.findOne({
+            where: {
+                MedicineId: id
+            }
+        }) 
+        const anyConsumption = await Consumption.findOne({
+            where: {
+                MedicineId: id
+            }
+        }) 
 
         if (!anyIncoming || !anyConsumption) {
+            const medicine = await Medicine.findByPk(id)
             const item = await Medicine.update({title, description: desc}, {
                 where: {
                     id
                 }
             })
+            req.flash('success', `Ліки ${medicine.title} відредаговано`)
             res.status(201).redirect(`/medicine?page=${req.session.page}&limit=${req.session.limit}&isActive=${req.session.isActive}&order=${req.session.order}&upOrDown=${req.session.upOrDown}`)
         } else {
+            req.flash('error', 'Неможливо редагувати ліки, якщо по ним вже є прихід, чи розхід')
             res.redirect(`/medicine?page=${req.session.page}&limit=${req.session.limit}&isActive=${req.session.isActive}&order=${req.session.order}&upOrDown=${req.session.upOrDown}`)
         }
         
@@ -126,6 +148,10 @@ router.post('/restore', authSuperAdmin, async (req, res) => {
                 id: req.body.restoredId
             }
         })
+        const medicine = await Medicine.findByPk(req.body.restoredId)
+         
+
+        req.flash('success', `Ліки ${medicine.title} відновлено`)
         res.status(201).redirect(`/medicine?page=${req.session.page}&limit=${req.session.limit}&isActive=${req.session.isActive}&order=${req.session.order}&upOrDown=${req.session.upOrDown}`)
     } catch(e) {
         throw e
@@ -141,8 +167,10 @@ router.post('/delete', authSuperAdmin, async (req, res) => {
                     id: req.body.id
                 }
             })
+            req.flash('success', `Ліки ${medicine.title} списано`)
             res.status(201).redirect(`/medicine?page=${req.session.page}&limit=${req.session.limit}&isActive=${req.session.isActive}&order=${req.session.order}&upOrDown=${req.session.upOrDown}`)
         } else {
+            req.flash('error', 'Щоб списати ліки потрібно, щоб залишок = нулю')
             res.redirect(`/medicine?page=${req.session.page}&limit=${req.session.limit}&isActive=${req.session.isActive}&order=${req.session.order}&upOrDown=${req.session.upOrDown}`)
         }
         

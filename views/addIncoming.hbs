@@ -1,5 +1,9 @@
 <h1>Прихід</h1>
 
+{{#if msg}}
+    <div class="alert alert-danger">{{msg}}</div>
+{{/if}}
+
 <div class="form">
     {{#if allMedicines.length}}
         <form class="form-horizontal" method="POST" action="/addIncoming">
@@ -24,6 +28,6 @@
         </form>
 
     {{else}}
-        <h1>Приходу немає!</h1>
+        <h1>Медикаментів немає!</h1>
     {{/if}}
 </div>

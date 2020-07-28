@@ -1,5 +1,8 @@
 <h1>Новий препарат</h1>
 
+{{#if msg}}
+    <div class="alert alert-danger">{{msg}}</div>
+{{/if}}
 
 <div class="form">
     <form method="POST" action="/addMedicine">

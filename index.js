@@ -20,6 +20,7 @@ const addConsumptionRouter = require('./routes/addConsumption')
 const InRerportRouter = require('./routes/InReport')
 const outReportRouter = require('./routes/OutReport')
 const usersRouter = require('./routes/users')
+const profileRouter = require('./routes/profile')
 const errorHandler404 = require('./middleware/errorHandler404')
 const authRouter = require('./routes/auth')
 const varMiddleware = require('./middleware/variables')
@@ -27,6 +28,19 @@ const MySQLStore = require('express-mysql-session')(session)
 const authAdmin = require('./middleware/authAdmin')
 const authSuperAdmin = require('./middleware/authSuperAdmin')
 const csurf = require('csurf')
+const cron = require('node-cron')
+
+
+// cron.schedule('* * * * *', function () {
+//   let date = new Date()
+//   console.log(date)
+//   console.log('year = ',date.getFullYear())
+//   console.log('month = ',date.getMonth())
+//   console.log('date = ',date.getDate())
+//   console.log('day of week = ',date.getDay())
+//   console.log('hours = ', date.getHours())
+//   console.log('minutes = ',date.getMinutes())
+// })
 
 
 
@@ -82,6 +96,7 @@ app.use('/inReport', InRerportRouter)
 app.use('/outReport', outReportRouter)
 app.use('/auth', authRouter)
 app.use('/users', authSuperAdmin, usersRouter)
+app.use('/profile', profileRouter)
 
 app.use(errorHandler404)
 

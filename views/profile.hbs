@@ -1,0 +1,21 @@
+<h1>Ваш профіль</h1> 
+
+{{#if success}}
+    <div class="alert alert-success" role="alert">{{success}}</div>
+{{/if}}
+
+{{#if error}}
+    <p class="alert alert-danger">{{error}}</p>
+{{/if}}
+
+<form method="POST" action="/profile">
+    <p>Ваша пошта : {{user.email}}</p>
+    <div class="form-group">
+        <label for="name">Ваше ім'я</label>
+        <input value="{{user.name}}" type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp" placeholder="" required>
+        <small id="nameHelp" class="form-text text-muted">  Ім'я має складатися мінімум з трьох букв</small>
+    </div>
+    <input type="hidden" name="id" value="{{user.id}}">
+    <input type="hidden" name="_csrf" value="{{csrf}}">
+    <button type="submit" class="btn btn-primary">Змінити</button>
+</form>

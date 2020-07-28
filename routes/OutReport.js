@@ -14,6 +14,8 @@ const dateToView = require('../middleware/dateToView')
 const authModerator = require('../middleware/authModerator')
 const partial = require('../emails/partial')
 const { send } = require('@sendgrid/mail')
+const cron = require('node-cron')
+
 
 
 router.get('/', authModerator, async (req, res) => {
@@ -265,7 +267,7 @@ router.post('/sendReport', async (req, res) => {
                 <th width="50" valign="top">
                     ${++index}
                 </th>
-                <td style="font-size: 1rem; line-height: 0; text-align: center;" width="450">
+                <td style="font-size: 1rem; line-height: 0; " width="450">
                     ${elem.name}
                 </td>
                 <td style="text-align: center;" width="100" valign="top">
@@ -274,9 +276,6 @@ router.post('/sendReport', async (req, res) => {
             </tr>
         `, ``)
 
-
-        console.log(html)
-        //await sgMail.send(reportEmail(email, html))
         await sgMail.send(partial(email, html, header))
 
         req.flash('success', `Звіт надіслано на пошту : ${email}`)

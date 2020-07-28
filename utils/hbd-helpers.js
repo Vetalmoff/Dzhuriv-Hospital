@@ -6,7 +6,7 @@ module.exports = {
         return i
     },
     roles(user, csrf) {
-        console.log('user from helper ===== ', user)
+        //console.log('user from helper ===== ', user)
         switch (user.role) {
             case 'user':
                 return `

@@ -4,7 +4,7 @@ module.exports = function(email, html, header) {
     return {
         to: email,
         from: keys.EMAIL_FROM,
-        subject: 'account was created',
+        subject: 'report',
         html: `
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml">
@@ -32,9 +32,9 @@ module.exports = function(email, html, header) {
                                     <td>
                                         <table border="1" cellpadding="0" cellspacing="0" width="100%">
                                                 <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Назва</th>
-                                                    <th scope="col">Кількість</th>
+                                                    <th style="text-align: center;">#</th>
+                                                    <th>Назва</th>
+                                                    <th>Кількість</th>
                                                 </tr>
                                                 ${html}
                                         </table>
