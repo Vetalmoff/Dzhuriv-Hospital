@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const { DB, user, password, host, port } = require('./keys/keys.dev')
+const { DB, user, password, host, port } = require('./keys/keys')
 const exphbs = require('express-handlebars')
 const Handlebars = require('handlebars')
 const path = require('path')
