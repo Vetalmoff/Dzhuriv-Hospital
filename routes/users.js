@@ -14,7 +14,8 @@ router.get('/', async (req, res) => {
             },
             order: ['name']
         })
-        //console.log('allUsers ====== ', users)
+
+        
 
         res.render('users', {
             users,

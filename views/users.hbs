@@ -20,7 +20,24 @@
                     <th scope="row">{{index @index}}</th>
                     <td>{{name}}</td>
                     <td>{{email}}</td>
-                    <td>{{{roles this @root.csrf}}}</td>
+                    <td>
+                        <form method="POST" action="/users/{{id}}"> 
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="role" id="{{user.id}}1" value="user" {{isUser role}}>
+                                <label class="form-check-label" for="{{user.id}}1">User</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="role" id="{{user.id}}2" value="moderator" {{isModerator role}}>
+                                <label class="form-check-label" for="{{user.id}}2">Moderator</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="role" id="{{user.id}}3" value="admin" {{isAdmin role}}>
+                                <label class="form-check-label" for="{{user.id}}3">Admin</label>
+                            </div>
+                            <input type="hidden" name="_csrf" value="{{@root.csrf}}">
+                            <button type="submit" class="btn btn-info btn-sm">Підтвердити</button>
+                        </form>
+                    </td>
                     </tr>
             {{/each}}
         </tbody>

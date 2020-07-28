@@ -97,4 +97,6 @@ if ( ($confirm)) {
 }
   
 
-
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
